@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+    --night:   #080b14;
+    --deep:    #0d1120;
+    --surface: #121828;
+    --lift:    #1a2235;
+    --rim:     rgba(255,255,255,0.055);
+
+    --moon:    #c8d8e8;
+    --muted:   #5a6a82;
+    --faint:   #2e3d55;
+
+    --sage:    #7eaaa0;
+    --sand:    #c4a882;
+    --lavender:#9ba8c4;
+
+    --r: 0.75rem;
+    --r-lg: 1.25rem;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--night);
+    color: var(--moon);
+    line-height: 1.65;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(1px 1px at 18% 14%, rgba(200,216,232,0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 73% 8%,  rgba(200,216,232,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 42% 55%, rgba(200,216,232,0.2)  0%, transparent 100%),
+        radial-gradient(1px 1px at 88% 38%, rgba(200,216,232,0.3)  0%, transparent 100%),
+        radial-gradient(1px 1px at 6%  82%, rgba(200,216,232,0.2)  0%, transparent 100%),
+        radial-gradient(1px 1px at 63% 91%, rgba(200,216,232,0.15) 0%, transparent 100%),
+        radial-gradient(1px 1px at 31% 76%, rgba(200,216,232,0.2)  0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 27%, rgba(200,216,232,0.18) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ─── NAV ─── */
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 7%;
+    border-bottom: 1px solid var(--rim);
+    background: rgba(8,11,20,0.85);
+    backdrop-filter: blur(14px);
+}
+
+.logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+    color: var(--moon);
+}
+.logo span { color: var(--sage); }
+
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--moon); background: var(--lift); }
+.nav-links a.nav-cta {
+    background: var(--sage);
+    color: var(--night);
+    font-weight: 500;
+}
+.nav-links a.nav-cta:hover { opacity: 0.88; background: var(--sage); }
+
+/* ─── BUTTONS ─── */
+.btn {
+    display: inline-block;
+    padding: 11px 24px;
+    border-radius: var(--r);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.btn-primary { background: var(--sage); color: var(--night); }
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-secondary {
+    background: transparent;
+    color: var(--moon);
+    border: 1px solid var(--faint);
+}
+.btn-secondary:hover { border-color: var(--muted); background: var(--lift); }
+.btn-ghost { background: var(--lift); color: var(--moon); }
+.btn-ghost:hover { background: var(--faint); }
+
+/* ─── FORMS ─── */
+input, select, textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background: var(--deep);
+    border: 1px solid var(--faint);
+    border-radius: var(--r);
+    color: var(--moon);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    outline: none;
+    appearance: none;
+}
+input:focus, select:focus { border-color: var(--sage); }
+select { cursor: pointer; }
+
+label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 7px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.form-group { display: flex; flex-direction: column; }
+
+/* ─── CARD ─── */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--rim);
+    border-radius: var(--r-lg);
+    padding: 28px 32px;
+}
+
+/* ─── DIVIDER ─── */
+.divider {
+    border: none;
+    border-top: 1px solid var(--rim);
+    margin: 0;
+}
+
+/* ─── PAGE TITLE ─── */
+h1, h2, h3, h4 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+/* ─── FOOTER ─── */
+footer {
+    text-align: center;
+    padding: 32px 7%;
+    color: var(--muted);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--rim);
+    margin-top: 80px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ─── UTILITIES ─── */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+.tag-sage    { background: rgba(126,170,160,0.15); color: var(--sage); }
+.tag-sand    { background: rgba(196,168,130,0.15); color: var(--sand); }
+.tag-lavender{ background: rgba(155,168,196,0.15); color: var(--lavender); }
+.tag-red     { background: rgba(200,100,100,0.15); color: #d98080; }
+
+.dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.dot-sage { background: var(--sage); }
+.dot-sand { background: var(--sand); }
+.dot-red  { background: #d98080; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 10px; }

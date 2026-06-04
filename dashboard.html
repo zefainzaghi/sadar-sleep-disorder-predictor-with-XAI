@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — nama webnya blm ada</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+
+        /* ── LAYOUT ──────────────────────────────────────── */
+        .dash-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 28px;
+            padding: 32px 6%;
+            align-items: start;
+        }
+
+        /* ── SIDEBAR ─────────────────────────────────────── */
+        .sidebar { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 92px; }
+
+        .profile-card { text-align: center; padding: 28px 24px; }
+        .avatar {
+            width: 68px; height: 68px; border-radius: 50%;
+            background: rgba(126,170,160,0.12);
+            border: 1.5px solid rgba(126,170,160,0.3);
+            color: var(--sage);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'DM Serif Display', serif; font-size: 1.3rem;
+            margin: 0 auto 14px;
+        }
+        .profile-name  { font-size: 1rem; margin-bottom: 3px; }
+        .profile-email { font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+        .profile-since { font-size: 0.75rem; color: var(--faint); }
+
+        .stats-card { padding: 20px 24px; }
+        .stat-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 11px 0; border-bottom: 1px solid var(--rim); font-size: 0.86rem;
+        }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-row .label { color: var(--muted); }
+        .stat-row .value { font-weight: 500; color: var(--sage); }
+
+        .sidebar-nav { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+        .sidebar-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border-radius: var(--r);
+            color: var(--muted); font-size: 0.88rem;
+            text-decoration: none; transition: all 0.15s;
+            border: none; background: none; font-family: inherit;
+            width: 100%; text-align: left; cursor: pointer;
+        }
+        .sidebar-link:hover, .sidebar-link.active { color: var(--moon); background: var(--lift); }
+        .sidebar-link .icon { font-size: 1rem; width: 18px; text-align: center; }
+
+        /* ── MAIN ────────────────────────────────────────── */
+        .main { display: flex; flex-direction: column; gap: 24px; }
+
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+        .section-header h3 { font-size: 1.35rem; }
+        .section-sub { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+        /* ── FORM GRID ───────────────────────────────────── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-grid .span-2 { grid-column: span 2; }
+
+        /* Section divider dalam form */
+        .form-section-label {
+            grid-column: span 2;
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--rim);
+            margin-top: 6px;
+        }
+
+        /* Slider row: label + track + value */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .slider-row input[type="range"] {
+            flex: 1;
+            padding: 0;
+            border: none;
+            background: transparent;
+            accent-color: var(--sage);
+            cursor: pointer;
+            height: 4px;
+        }
+        .slider-val {
+            min-width: 28px;
+            text-align: right;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--sage);
+        }
+
+        .form-actions {
+            display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px;
+        }
+
+        /* hint text */
+        .input-hint {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        /* ── RESULT CARD ─────────────────────────────────── */
+        #result-card {
+            display: none;
+            border-left: 3px solid var(--sage);
+            position: relative; overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        #result-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at top left, rgba(126,170,160,0.04), transparent 60%);
+            pointer-events: none;
+        }
+        .result-header {
+            display: flex; align-items: flex-start;
+            justify-content: space-between; margin-bottom: 16px; gap: 12px;
+        }
+        .result-header h3 { font-size: 1.25rem; }
+        .result-meta { font-size: 0.84rem; color: var(--muted); margin-top: 6px; }
+        .result-meta strong { color: var(--moon); }
+
+        .result-tips {
+            margin-top: 14px; padding-left: 0; list-style: none;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .result-tips li {
+            display: flex; gap: 10px;
+            font-size: 0.88rem; color: var(--muted); line-height: 1.65;
+        }
+        .result-tips li::before { content: '—'; color: var(--sage); flex-shrink: 0; }
+
+        .disclaimer {
+            font-size: 0.75rem; color: var(--faint); margin-top: 20px;
+        }
+
+        /* ── HISTORY ─────────────────────────────────────── */
+        .history-list { display: flex; flex-direction: column; gap: 10px; }
+        .history-item {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: var(--deep);
+            border: 1px solid var(--rim); border-radius: var(--r);
+            transition: border-color 0.15s; gap: 12px;
+        }
+        .history-item:hover { border-color: var(--faint); }
+        .history-left { display: flex; flex-direction: column; gap: 7px; }
+        .history-meta { font-size: 0.8rem; color: var(--muted); }
+        .history-date { font-size: 0.8rem; color: var(--faint); white-space: nowrap; }
+
+        .history-empty { padding: 32px; text-align: center; color: var(--muted); font-size: 0.88rem; }
+        .history-empty p { margin-top: 8px; }
+
+        /* ── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 900px) {
+            .dash-layout { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+        }
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-grid .span-2, .form-grid .form-section-label { grid-column: span 1; }
+            .dash-layout { padding: 20px 4%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">nama<span>web</span>.</div>
+    <div class="nav-links">
+        <a href="#" class="active">Dashboard</a>
+        <a href="landingPage.html">Beranda</a>
+        <a href="login.html">Keluar</a>
+    </div>
+</nav>
+
+<div class="dash-layout">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+        <div class="card profile-card">
+            <div class="avatar" id="profile-initials">—</div>
+            <div class="profile-name" id="profile-name">Memuat...</div>
+            <div class="profile-email" id="profile-email"></div>
+            <div class="profile-since">Bergabung <span id="profile-joined">—</span></div>
+        </div>
+
+        <div class="card stats-card">
+            <div class="stat-row">
+                <span class="label">Total Analisis</span>
+                <span class="value" id="stat-total">0 Kali</span>
+            </div>
+            <div class="stat-row">
+                <span class="label">Status Terakhir</span>
+                <span class="value" id="stat-last">—</span>
+            </div>
+        </div>
+
+        <div class="card sidebar-nav">
+            <a class="sidebar-link active" href="#">
+                <span class="icon">🌙</span> Analisis Tidur
+            </a>
+            <a class="sidebar-link" href="#history-section">
+                <span class="icon">📋</span> Riwayat
+            </a>
+            <a class="sidebar-link" href="login.html">
+                <span class="icon">→</span> Keluar
+            </a>
+        </div>
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <main class="main">
+
+        <!-- FORM PREDIKSI -->
+        <section class="card">
+            <div class="section-header">
+                <div>
+                    <h3>Evaluasi Tidur Malam Ini</h3>
+                    <p class="section-sub">Isi formulir seakurat mungkin.</p>
+                </div>
+            </div>
+
+            <form id="predict-form">
+                <div class="form-grid">
+
+                    <!-- SEKSI: DATA DIRI -->
+                    <div class="form-section-label">Data Diri</div>
+
+                    <div class="form-group">
+                        <label>Usia (tahun)</label>
+                        <input type="number" id="inp-age" min="18" max="80" placeholder="Contoh: 25">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jenis Kelamin</label>
+                        <select id="inp-gender">
+                            <option value="" disabled selected>Pilih...</option>
+                            <option value="Male">Pria</option>
+                            <option value="Female">Wanita</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kategori BMI</label>
+                        <select id="inp-bmi">
+                            <option value="" disabled selected>Pilih kategori...</option>
+                            <option value="Normal">Normal</option>
+                            <option value="Overweight">Overweight (Kelebihan berat)</option>
+                            <option value="Obese">Obese (Obesitas)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Langkah Harian</label>
+                        <input type="number" id="inp-steps" min="1000" max="20000" step="500" placeholder="Contoh: 7000">
+                        <p class="input-hint">Rata-rata langkah kaki per hari.</p>
+                    </div>
+
+                    <!-- SEKSI: POLA TIDUR -->
+                    <div class="form-section-label">Pola Tidur</div>
+
+                    <div class="form-group">
+                        <label>Durasi Tidur (jam)</label>
+                        <input type="number" id="inp-sleep" min="4" max="10" step="0.1" placeholder="Contoh: 6.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kualitas Tidur &nbsp;<span style="color:var(--muted);font-size:0.8rem;">(1 = buruk, 10 = sangat nyenyak)</span></label>
+                        <div class="slider-row">
+                            <input type="range" id="inp-quality" min="1" max="10" value="5" oninput="document.getElementById('quality-val').textContent=this.value">
+                            <span class="slider-val" id="quality-val">5</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Level Stres &nbsp;<span style="color:var(--muted);font-size:0.8rem;">(1 = santai, 10 = sangat stres)</span></label>
+                        <div class="slider-row">
+                            <input type="range" id="inp-stress" min="1" max="10" value="5" oninput="document.getElementById('stress-val').textContent=this.value">
+                            <span class="slider-val" id="stress-val">5</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Aktivitas Fisik (menit/hari)</label>
+                        <input type="number" id="inp-activity" min="0" max="120" placeholder="Contoh: 45">
+                        <p class="input-hint">Total durasi olahraga/gerak aktif hari ini.</p>
+                    </div>
+
+                    <!-- SEKSI: DATA KESEHATAN -->
+                    <div class="form-section-label">Data Kesehatan</div>
+
+                    <div class="form-group">
+                        <label>Tekanan Darah Sistolik (mmHg)</label>
+                        <input type="number" id="inp-systolic" min="90" max="180" placeholder="Contoh: 120">
+                        <p class="input-hint">Angka atas pada hasil tensi. Normal: 90–119.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tekanan Darah Diastolik (mmHg)</label>
+                        <input type="number" id="inp-diastolic" min="60" max="120" placeholder="Contoh: 80">
+                        <p class="input-hint">Angka bawah pada hasil tensi. Normal: 60–79.</p>
+                    </div>
+
+                    <div class="form-group span-2">
+                        <label>Detak Jantung (bpm)</label>
+                        <input type="number" id="inp-hr" min="50" max="110" placeholder="Contoh: 72">
+                        <p class="input-hint">Detak jantung istirahat. Normal dewasa: 60–100 bpm.</p>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-ghost" onclick="resetForm()">Reset</button>
+                    <button type="submit" class="btn btn-primary">Analisis Sekarang</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- HASIL PREDIKSI -->
+        <section class="card" id="result-card">
+            <div class="result-header">
+                <div>
+                    <h3>Hasil Analisis</h3>
+                    <div class="result-meta">
+                        Tidur <strong id="res-dur">—</strong> jam &nbsp;·&nbsp;
+                        Kualitas <strong id="res-quality">—</strong>/10 &nbsp;·&nbsp;
+                        Stres <strong id="res-stress">—</strong>/10
+                    </div>
+                </div>
+                <span class="tag" id="res-label">—</span>
+            </div>
+
+            <hr class="divider" style="margin-bottom:16px;">
+
+            <p style="font-size:0.88rem; color:var(--muted); margin-bottom:10px;" id="res-intro"></p>
+            <ul class="result-tips" id="res-tips"></ul>
+
+            <p class="disclaimer">
+                * Analisis ini bersifat indikatif berdasarkan model machine learning dan tidak menggantikan diagnosis medis profesional.
+            </p>
+        </section>
+
+        <!-- RIWAYAT -->
+        <section class="card" id="history-section">
+            <div class="section-header">
+                <div>
+                    <h3>Riwayat Analisis</h3>
+                </div>
+                <button class="btn btn-ghost" onclick="clearAllHistory()" style="font-size:0.8rem; padding:7px 14px;">
+                    Hapus Semua
+                </button>
+            </div>
+            <div class="history-list" id="history-list"></div>
+            <div class="history-empty" id="history-empty" style="display:none;">
+                <span style="font-size:1.5rem;">🌙</span>
+                <p>Belum ada riwayat analisis.<br>Isi form di atas untuk memulai.</p>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<footer>
+    <p>pikirin nama webnya woi. &nbsp;·&nbsp; Prediktor Sleep Disorder.</p>
+</footer>
+
+<script src="js/dashboard.js"></script>
+<script>
+    function resetForm() {
+        document.getElementById('predict-form').reset();
+        document.getElementById('quality-val').textContent = '5';
+        document.getElementById('stress-val').textContent  = '5';
+        document.getElementById('result-card').style.display = 'none';
+    }
+
+    function clearAllHistory() {
+        if (!confirm('Hapus semua riwayat analisis?')) return;
+        localStorage.removeItem('rs_history');
+        renderHistory([]);
+        document.getElementById('stat-total').textContent = '0 Kali';
+        document.getElementById('stat-last').textContent  = '—';
+    }
+</script>
+
+</body>
+</html>
