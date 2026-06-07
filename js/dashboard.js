@@ -1,7 +1,7 @@
 const STORAGE_KEY = 'rs_history';
 
 const RECOMMENDATIONS = {
-    'None': {
+    None: {
         label: 'Pola Tidur Sehat',
         tagClass: 'tag-sage',
         dotClass: 'dot-sage',
@@ -13,9 +13,9 @@ const RECOMMENDATIONS = {
             'Tetap aktif, aktivitas fisik rutin menjaga kualitas tidur jangka panjang.',
             'Paparan sinar matahari pagi membantu mengatur ritme sirkadian.',
             'Pantau stres harianmu, lonjakan stres adalah sinyal paling awal gangguan tidur.',
-        ]
+        ],
     },
-    'Insomnia': {
+    Insomnia: {
         label: 'Indikasi Insomnia',
         tagClass: 'tag-sand',
         dotClass: 'dot-sand',
@@ -28,7 +28,7 @@ const RECOMMENDATIONS = {
             'Batasi kafein setelah pukul 14.00 dan hindari alkohol, keduanya mengganggu siklus REM.',
             'Jika tidak bisa tidur setelah 20 menit, keluar dari kasur dan lakukan aktivitas tenang.',
             'Kelola stres harianmu, level stres tinggi adalah pemicu utama insomnia.',
-        ]
+        ],
     },
     'Sleep Apnea': {
         label: 'Indikasi Sleep Apnea',
@@ -43,16 +43,16 @@ const RECOMMENDATIONS = {
             'Hindari alkohol dan obat penenang sebelum tidur, keduanya melemaskan otot tenggorokan.',
             'Monitor tekanan darah secara berkala. Sleep apnea dan hipertensi saling memperburuk.',
             'Pertimbangkan konsultasi mengenai alat CPAP jika gejala berlanjut.',
-        ]
-    }
+        ],
+    },
 };
 
 function predict(data) {
-    const dur      = parseFloat(data.sleep_duration);
-    const quality  = parseInt(data.quality);
-    const stress   = parseInt(data.stress);
+    const dur = parseFloat(data.sleep_duration);
+    const quality = parseInt(data.quality);
+    const stress = parseInt(data.stress);
     const systolic = parseInt(data.systolic);
-    const bmi      = data.bmi;
+    const bmi = data.bmi;
     const activity = parseInt(data.activity);
 
     const apneaScore =
@@ -76,8 +76,11 @@ function predict(data) {
 }
 
 function loadHistory() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-    catch { return []; }
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch {
+        return [];
+    }
 }
 
 function saveHistory(history) {
@@ -86,13 +89,15 @@ function saveHistory(history) {
 
 function formatDate(isoStr) {
     return new Date(isoStr).toLocaleDateString('id-ID', {
-        day: '2-digit', month: 'long', year: 'numeric'
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
     });
 }
 
 function renderHistory(history) {
     const container = document.getElementById('history-list');
-    const empty     = document.getElementById('history-empty');
+    const empty = document.getElementById('history-empty');
 
     if (!history.length) {
         container.innerHTML = '';
@@ -102,8 +107,9 @@ function renderHistory(history) {
     empty.style.display = 'none';
 
     container.innerHTML = history
-        .slice().reverse()
-        .map(item => {
+        .slice()
+        .reverse()
+        .map((item) => {
             const rec = RECOMMENDATIONS[item.result] || RECOMMENDATIONS['None'];
             return `
             <div class="history-item">
@@ -120,9 +126,11 @@ function renderHistory(history) {
                 </div>
                 <div class="history-date">${formatDate(item.date)}</div>
             </div>`;
-        }).join('');
+        })
+        .join('');
 
-    document.getElementById('stat-total').textContent = history.length + ' Kali';
+    document.getElementById('stat-total').textContent =
+        history.length + ' Kali';
     const last = history[history.length - 1];
     if (last) {
         const r = RECOMMENDATIONS[last.result] || RECOMMENDATIONS['None'];
@@ -131,22 +139,23 @@ function renderHistory(history) {
 }
 
 function renderResult(result, data) {
-    const rec  = RECOMMENDATIONS[result] || RECOMMENDATIONS['None'];
+    const rec = RECOMMENDATIONS[result] || RECOMMENDATIONS['None'];
     const card = document.getElementById('result-card');
 
     card.style.borderLeftColor = rec.borderColor;
-    document.getElementById('res-label').textContent   = rec.label;
-    document.getElementById('res-label').className     = 'tag ' + rec.tagClass;
-    document.getElementById('res-intro').textContent   = rec.intro;
-    document.getElementById('res-dur').textContent     = data.sleep_duration;
+    document.getElementById('res-label').textContent = rec.label;
+    document.getElementById('res-label').className = 'tag ' + rec.tagClass;
+    document.getElementById('res-intro').textContent = rec.intro;
+    document.getElementById('res-dur').textContent = data.sleep_duration;
     document.getElementById('res-quality').textContent = data.quality;
-    document.getElementById('res-stress').textContent  = data.stress;
+    document.getElementById('res-stress').textContent = data.stress;
 
     document.getElementById('res-tips').innerHTML = rec.tips
-        .map(t => '<li>' + t + '</li>').join('');
+        .map((t) => '<li>' + t + '</li>')
+        .join('');
 
     card.style.display = 'block';
-    setTimeout(function() {
+    setTimeout(function () {
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
 }
@@ -156,50 +165,62 @@ function initUser() {
     try {
         var stored = sessionStorage.getItem('rs_user');
         if (stored) user = JSON.parse(stored);
-    } catch(e) {}
+    } catch (e) {}
 
-    var name  = user.name || 'Pengguna';
+    var name = user.name || 'Pengguna';
     var parts = name.trim().split(' ');
-    var initials = parts.length >= 2
-        ? parts[0][0] + parts[parts.length - 1][0]
-        : name.slice(0, 2);
+    var initials =
+        parts.length >= 2
+            ? parts[0][0] + parts[parts.length - 1][0]
+            : name.slice(0, 2);
 
-    document.getElementById('profile-initials').textContent = initials.toUpperCase();
-    document.getElementById('profile-name').textContent     = name;
-    document.getElementById('profile-email').textContent    = user.email || '';
-    document.getElementById('profile-joined').textContent   =
-        new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+    document.getElementById('profile-initials').textContent =
+        initials.toUpperCase();
+    document.getElementById('profile-name').textContent = name;
+    document.getElementById('profile-email').textContent = user.email || '';
+    document.getElementById('profile-joined').textContent =
+        new Date().toLocaleDateString('id-ID', {
+            month: 'long',
+            year: 'numeric',
+        });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initUser();
     renderHistory(loadHistory());
 
     var form = document.getElementById('predict-form');
-    form.addEventListener('submit', function(e) {
+    // Notice the 'async' keyword added here
+    form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         // field IDs yang wajib diisi (slider tidak perlu karena selalu ada value)
         var requiredFields = [
-            'inp-age', 'inp-gender', 'inp-sleep',
-            'inp-activity', 'inp-bmi',
-            'inp-systolic', 'inp-diastolic', 'inp-hr', 'inp-steps'
+            'inp-age',
+            'inp-gender',
+            'inp-sleep',
+            'inp-activity',
+            'inp-bmi',
+            'inp-systolic',
+            'inp-diastolic',
+            'inp-hr',
+            'inp-steps',
         ];
 
         // reset border
-        requiredFields.forEach(function(id) {
+        requiredFields.forEach(function (id) {
             var el = document.getElementById(id);
             if (el) el.style.borderColor = '';
         });
 
         // cek kosong
-        var emptyFields = requiredFields.filter(function(id) {
+        var emptyFields = requiredFields.filter(function (id) {
             var el = document.getElementById(id);
             return !el || el.value === '' || el.value === null;
         });
 
         if (emptyFields.length > 0) {
-            emptyFields.forEach(function(id) {
+            emptyFields.forEach(function (id) {
                 var el = document.getElementById(id);
                 if (el) el.style.borderColor = '#d98080';
             });
@@ -208,31 +229,65 @@ document.addEventListener('DOMContentLoaded', function() {
                 firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 firstEl.focus();
             }
-            return; 
+            return;
         }
 
         var data = {
-            age:            document.getElementById('inp-age').value,
-            gender:         document.getElementById('inp-gender').value,
+            age: document.getElementById('inp-age').value,
+            gender: document.getElementById('inp-gender').value,
             sleep_duration: document.getElementById('inp-sleep').value,
-            quality:        document.getElementById('inp-quality').value,
-            activity:       document.getElementById('inp-activity').value,
-            stress:         document.getElementById('inp-stress').value,
-            bmi:            document.getElementById('inp-bmi').value,
-            systolic:       document.getElementById('inp-systolic').value,
-            diastolic:      document.getElementById('inp-diastolic').value,
-            heart_rate:     document.getElementById('inp-hr').value,
-            daily_steps:    document.getElementById('inp-steps').value,
-            date:           new Date().toISOString(),
+            quality_of_sleep: document.getElementById('inp-quality').value,
+            physical_activity: document.getElementById('inp-activity').value,
+            stress_level: document.getElementById('inp-stress').value,
+            bmi: document.getElementById('inp-bmi').value,
+            systolic: document.getElementById('inp-systolic').value,
+            diastolic: document.getElementById('inp-diastolic').value,
+            heart_rate: document.getElementById('inp-hr').value,
+            daily_steps: document.getElementById('inp-steps').value,
+            date: new Date().toISOString(),
         };
 
-        var result  = predict(data);
-        data.result = result;
+        // --- NEW API INTEGRATION LOGIC ---
+        // Change the button text so the user knows it's loading
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = 'Menganalisis...';
+        submitBtn.disabled = true;
 
-        var history = loadHistory();
-        history.push(data);
-        saveHistory(history);
-        renderHistory(history);
-        renderResult(result, data);
+        try {
+            // Send the data to your Flask Python API
+            const response = await fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            const resData = await response.json();
+
+            if (resData.status === 'success') {
+                var result = resData.prediction;
+                data.result = result; // Save the API prediction into our data object
+
+                // Save to local storage history
+                var history = loadHistory();
+                history.push(data);
+                saveHistory(history);
+                renderHistory(history);
+
+                // Show the UI card
+                renderResult(result, data);
+            } else {
+                alert('Error dari model: ' + resData.message);
+            }
+        } catch (error) {
+            console.error('API Error:', error);
+            alert(
+                'Gagal terhubung ke model AI. Pastikan file app.py sedang berjalan di terminal.',
+            );
+        } finally {
+            // Reset the button back to normal
+            submitBtn.innerText = originalBtnText;
+            submitBtn.disabled = false;
+        }
     });
 });
