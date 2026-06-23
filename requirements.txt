@@ -1,0 +1,9 @@
+Flask
+flask-cors
+flask-sqlalchemy
+pg8000
+werkzeug
+joblib
+pandas
+xgboost
+scikit-learn

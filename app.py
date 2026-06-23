@@ -9,11 +9,10 @@ import os
 
 
 app = Flask(__name__)
-CORS(app) # Crucial: Allows your HTML file to talk to this API
+CORS(app) 
 
-safe_password = urllib.parse.quote_plus("akusukapostgre")  # URL-encode the password
 # Configure database
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+pg8000://postgres:{safe_password}@localhost:5432/sadar'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -148,4 +147,5 @@ def login():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
