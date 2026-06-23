@@ -1,204 +1,211 @@
 # SADAR — Sleep Apnea & Disorder Advanced Reasoning
 
-> **Perhatian:** Aplikasi ini bukan pengganti diagnosis medis. Hasil yang diberikan bersifat indikatif dan perlu dikonsultasikan dengan tenaga kesehatan profesional.
+> **Disclaimer:** This application is not a substitute for medical diagnosis. All results are indicative only and should be discussed with a qualified healthcare professional.
 
-## Daftar Isi
+**Live Demo:** [sadarai.netlify.app](https://sadarai.netlify.app)
 
-- [Deskripsi Proyek](#deskripsi-proyek)
-- [Tampilan Aplikasi](#tampilan-aplikasi)
-- [Arsitektur Sistem](#arsitektur-sistem)
-- [Struktur Proyek](#struktur-proyek)
-- [Fitur Utama](#fitur-utama)
-- [Model Machine Learning](#model-machine-learning)
-- [API Endpoint](#api-endpoint)
-- [Kebutuhan Sistem](#kebutuhan-sistem)
-- [Cara Instalasi](#cara-instalasi)
-- [Cara Menjalankan](#cara-menjalankan)
-- [Penggunaan](#penggunaan)
-- [Input & Validasi](#input--validasi)
-- [Output & Interpretasi Hasil](#output--interpretasi-hasil)
-- [Teknologi yang Digunakan](#teknologi-yang-digunakan)
-- [Catatan Pengembangan](#catatan-pengembangan)
-- [Lisensi](#lisensi)
+## Table of Contents
 
----
-
-## Deskripsi Proyek
-
-**SADAR** adalah aplikasi web berbasis AI untuk mendeteksi indikasi gangguan tidur secara mandiri. Pengguna cukup mengisi formulir kesehatan singkat, lalu sistem akan memproses data tersebut menggunakan model _machine learning_ (XGBoost) untuk memprediksi kondisi tidur dan memberikan rekomendasi personal.
-
-Aplikasi ini dirancang sebagai alat bantu awal (_screening tool_) yang dapat diakses oleh siapa saja tanpa peralatan khusus, dengan antarmuka yang ramah pengguna dalam Bahasa Indonesia.
-
-**Kondisi yang dapat dideteksi:**
-
-- **Insomnia** — gangguan kesulitan memulai atau mempertahankan tidur
-- **Sleep Apnea** — gangguan pernapasan berulang saat tidur
-- **Pola Tidur Sehat** — tidak terdeteksi indikasi gangguan tidur (_None_)
+- [Project Description](#project-description)
+- [System Architecture](#system-architecture)
+- [Project Structure](#project-structure)
+- [Key Features](#key-features)
+- [Machine Learning Model](#machine-learning-model)
+- [API Endpoints](#api-endpoints)
+- [Tech Stack](#tech-stack)
+- [Local Development Setup](#local-development-setup)
+- [Deployment](#deployment)
+- [Usage Guide](#usage-guide)
+- [Input Fields & Validation](#input-fields--validation)
+- [Output & Result Interpretation](#output--result-interpretation)
+- [Development Notes](#development-notes)
+- [License](#license)
 
 ---
 
-## Arsitektur Sistem
+## Project Description
+
+**SADAR** is an AI-powered web application for early detection of sleep disorder indicators. Users fill out a short health form, and the system processes the input through a trained **XGBoost** machine learning model to classify the user's sleep condition and deliver personalized recommendations.
+
+Designed as an accessible self-screening tool — no special equipment required, results in under 2 minutes.
+
+**Detectable conditions:**
+
+- **Insomnia** — difficulty initiating or maintaining sleep
+- **Sleep Apnea** — repeated interruptions in breathing during sleep
+- **Healthy Sleep Pattern** — no disorder indicators detected (`None`)
+
+---
+
+## System Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                      BROWSER (Client)                   │
-│                                                         │
-│  landingPage.html  →  login.html  →  dashboard.html     │
-│                              ↑              ↑           │
-│                         style.css     dashboard.js      │
-└──────────────────────────────┬──────────────────────────┘
-                               │ HTTP POST (JSON)
-                               │ http://127.0.0.1:5000
-                               ▼
-┌─────────────────────────────────────────────────────────┐
-│                   BACKEND (Flask / Python)              │
-│                                                         │
-│   /login  ──►  PostgreSQL (tabel: users)                │
-│   /register ─► PostgreSQL (tabel: users)                │
-│   /predict ──► XGBoost Model → PostgreSQL               │
-│                               (tabel: prediction_history│
-└──────────────────────────────┬──────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────┐
-│                  MODEL (folder: Model/)                 │
-│                                                         │
-│   xgboost_sleep_model.pkl                               │
-│   le_bmi.pkl  ·  le_gender.pkl  ·  le_target.pkl        │
-└─────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                    BROWSER (Client)                      │
+│                                                          │
+│   index.html  →  login.html  →  dashboard.html           │
+│                       ↑               ↑                  │
+│                  style.css       dashboard.js            │
+│                                                          │
+│              Hosted on: Netlify                          │
+└─────────────────────────┬────────────────────────────────┘
+                          │ HTTPS POST (JSON)
+                          │ https://sadar-sleep-disorder-predictor-
+                          │ with-xai-production.up.railway.app
+                          ▼
+┌──────────────────────────────────────────────────────────┐
+│                BACKEND (Flask / Python)                  │
+│                                                          │
+│   /login    ──►  PostgreSQL (table: users)               │
+│   /register ──►  PostgreSQL (table: users)               │
+│   /predict  ──►  XGBoost Model                           │
+│                       └──► PostgreSQL                    │
+│                            (table: prediction_history)   │
+│                                                          │
+│              Hosted on: Railway                          │
+└─────────────────────────┬────────────────────────────────┘
+                          │
+                          ▼
+┌──────────────────────────────────────────────────────────┐
+│                  MODEL (folder: Model/)                  │
+│                                                          │
+│   xgboost_sleep_model.pkl                                │
+│   le_bmi.pkl  ·  le_gender.pkl  ·  le_target.pkl         │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Struktur Proyek
+## Project Structure
 
 ```
-Project-Matkul-AI/
+sadar-sleep-disorder-predictor-with-XAI/
 │
-├── app.py
+├── app.py                      # Flask backend (API server)
 │
-├── dashboard.html
-├── landingPage.html
-├── login.html
+├── index.html                  # Entry point (redirects to landing page)
+├── landingPage.html            # Public landing page
+├── login.html                  # Login & registration page
+├── dashboard.html              # Main analysis dashboard
 │
 ├── css/
-│   └── style.css
+│   └── style.css               # Global design system (dark theme)
 │
 ├── js/
-│   └── dashboard.js
+│   └── dashboard.js            # Frontend logic: form, XAI engine, history
 │
 ├── Model/
-│   ├── xgboost_sleep_model.pkl
-│   ├── le_bmi.pkl
-│   ├── le_gender.pkl
-│   └── le_target.pkl
+│   ├── xgboost_sleep_model.pkl # Trained XGBoost classifier
+│   ├── le_bmi.pkl              # Label encoder for BMI category
+│   ├── le_gender.pkl           # Label encoder for gender
+│   └── le_target.pkl           # Label encoder for prediction output
 │
-├── venv/
-├── .git/
-└── README.md
+├── Procfile                    # Railway process declaration
+├── requirements.txt            # Python dependencies
+└── README.md                   # This file
 ```
 
-### Penjelasan File Utama
+### Key File Descriptions
 
 **`app.py`**
-Backend Flask yang berjalan sebagai API server. Menangani autentikasi pengguna (login/register) dengan hashing password aman menggunakan Werkzeug, memuat model ML dan encoder dari folder `Model/`, menyimpan setiap hasil prediksi ke database PostgreSQL, serta menyediakan endpoint `/predict`, `/login`, dan `/register`.
+Flask API server. Handles user authentication (login/register) with secure password hashing via Werkzeug, loads the ML model and encoders from the `Model/` folder, saves every prediction result to PostgreSQL, and exposes `/predict`, `/login`, and `/register` endpoints.
 
 **`dashboard.html`**
-Halaman inti aplikasi setelah login. Menampilkan formulir input data kesehatan, kartu hasil prediksi dengan panel Explainable AI (XAI), visualisasi kontribusi faktor-faktor terhadap prediksi, rekomendasi tindakan yang dipersonalisasi, serta riwayat analisis pengguna.
-
-**`landingPage.html`**
-Halaman publik yang menjelaskan fitur dan cara kerja aplikasi, serta informasi tentang jenis gangguan tidur yang dapat terdeteksi.
+The core application page after login. Renders the health input form, prediction result card with an Explainable AI (XAI) panel, factor contribution visualizations, personalized recommendations, and the user's analysis history.
 
 **`login.html`**
-Halaman autentikasi dengan dua mode: _Login_ (masuk) dan _Register_ (buat akun baru). Menyimpan sesi pengguna ke `sessionStorage` browser setelah berhasil masuk.
+Authentication page with two modes: Login and Register. Saves the user session to `sessionStorage` upon successful authentication.
 
 **`css/style.css`**
-Sistem desain global dengan palet warna bertema malam (_dark mode_): `--night`, `--sage`, `--moon`, `--muted`, dsb. Mencakup styling untuk navigasi, tombol, form, kartu, sidebar, tag, dan komponen slider.
+Global design system with a night-sky dark theme using CSS variables: `--night`, `--sage`, `--moon`, `--muted`, etc. Covers navigation, buttons, forms, cards, sidebar, tags, and slider components.
 
 **`js/dashboard.js`**
-Logika frontend mencakup: pengiriman form ke API backend, mesin komputasi faktor XAI (`computeFactors`), render hasil prediksi dan rekomendasi, manajemen riwayat lokal via `localStorage`, serta inisialisasi profil pengguna dari `sessionStorage`.
+Frontend logic including: form submission to the backend API, XAI factor computation engine (`computeFactors`), prediction and recommendation rendering, local history management via `localStorage`, and user profile initialization from `sessionStorage`.
 
 ---
 
-## Fitur Utama
+## Key Features
 
-### Prediksi Gangguan Tidur
+### Sleep Disorder Prediction
 
-Model XGBoost menganalisis 11 parameter kesehatan dan kebiasaan pengguna untuk mengklasifikasikan kondisi tidur ke dalam tiga kategori: Insomnia, Sleep Apnea, atau Pola Sehat.
+The XGBoost model analyzes 11 health and lifestyle parameters to classify sleep conditions into three categories: Healthy Sleep, Insomnia, or Sleep Apnea.
 
 ### Explainable AI (XAI)
 
-Setiap hasil prediksi disertai penjelasan transparan tentang _mengapa_ model menghasilkan kesimpulan tersebut, berupa:
+Every prediction result is accompanied by a transparent explanation of _why_ the model reached that conclusion:
 
-- Peringkat tiga faktor paling berpengaruh dengan visualisasi _progress bar_
-- Persentase kontribusi tiap faktor
-- Ringkasan narasi keputusan model dalam Bahasa Indonesia
+- Top three most influential factors with progress bar visualizations
+- Relative contribution percentage per factor
+- Qualitative status labels (e.g., "Very Relaxed", "Active", "Ideal")
+- Decision summary narrative in plain language
 
-### Rekomendasi Personal
+### Personalized Recommendations
 
-Saran _sleep hygiene_ yang berbeda-beda sesuai hasil prediksi: tips mempertahankan pola sehat, langkah mengatasi insomnia, atau panduan penanganan sleep apnea.
+Tailored sleep hygiene advice based on the prediction result — tips for maintaining a healthy pattern, steps for managing insomnia, or guidance for sleep apnea.
 
-### Riwayat Analisis Lokal
+### Local Analysis History
 
-Setiap prediksi tersimpan di `localStorage` browser. Pengguna dapat melihat tren hasil dari waktu ke waktu dan menghapus riwayat kapan saja.
+Each prediction is saved in the browser's `localStorage`. Users can track trends over time and clear history at any time.
 
-### Riwayat Analisis di Database
+### Persistent Database History
 
-Setiap prediksi juga tersimpan secara permanen di tabel `prediction_history` PostgreSQL, terhubung ke akun pengguna yang sedang login.
+Each prediction is also permanently stored in the `prediction_history` table in PostgreSQL on Railway, linked to the logged-in user's account.
 
-### Antarmuka Bilingual-Friendly
+### Dark Mode UI
 
-Seluruh UI disajikan dalam Bahasa Indonesia dengan desain _dark mode_ yang nyaman untuk penggunaan malam hari.
-
----
-
-## Model Machine Learning
-
-### Algoritma
-
-Model menggunakan **XGBoost (Extreme Gradient Boosting)** yang dilatih untuk klasifikasi multi-kelas gangguan tidur.
-
-### Fitur Input Model
-
-Model menerima 11 fitur setelah preprocessing:
-
-| Nama Fitur di Model       | Sumber Input            | Tipe      |
-| ------------------------- | ----------------------- | --------- |
-| `Age`                     | Usia                    | Float     |
-| `Gender_enc`              | Jenis Kelamin           | Int (0/1) |
-| `Sleep Duration`          | Durasi Tidur            | Float     |
-| `Quality of Sleep`        | Kualitas Tidur          | Float     |
-| `Physical Activity Level` | Aktivitas Fisik         | Float     |
-| `Stress Level`            | Tingkat Stres           | Float     |
-| `BMI_enc`                 | Kategori BMI            | Float     |
-| `Systolic`                | Tekanan Darah Sistolik  | Float     |
-| `Diastolic`               | Tekanan Darah Diastolik | Float     |
-| `Heart Rate`              | Detak Jantung           | Float     |
-| `Daily Steps`             | Langkah Kaki Harian     | Float     |
-
-### Encoder
-
-- **`le_bmi.pkl`** — mengonversi `"Normal"`, `"Overweight"`, `"Obese"` ke nilai numerik
-- **`le_gender.pkl`** — referensi encoding gender (diimplementasikan manual: Male=1, Female=0)
-- **`le_target.pkl`** — mengonversi indeks prediksi kembali ke label kelas (`None`, `Insomnia`, `Sleep Apnea`)
-
-### Label Output
-
-| Label         | Keterangan                      |
-| ------------- | ------------------------------- |
-| `None`        | Tidak terdeteksi gangguan tidur |
-| `Insomnia`    | Terdeteksi indikasi insomnia    |
-| `Sleep Apnea` | Terdeteksi indikasi sleep apnea |
+The entire interface uses a night-sky dark theme, comfortable for evening use.
 
 ---
 
-## API Endpoint
+## Machine Learning Model
 
-Base URL (development): `http://127.0.0.1:5000`
+### Algorithm
+
+The model uses **XGBoost (Extreme Gradient Boosting)** trained for multi-class sleep disorder classification.
+
+### Model Input Features
+
+The model receives 11 features after preprocessing:
+
+| Feature Name in Model     | Input Field              | Type      |
+| ------------------------- | ------------------------ | --------- |
+| `Age`                     | Age                      | Float     |
+| `Gender_enc`              | Gender                   | Int (0/1) |
+| `Sleep Duration`          | Sleep Duration           | Float     |
+| `Quality of Sleep`        | Sleep Quality            | Float     |
+| `Physical Activity Level` | Physical Activity        | Float     |
+| `Stress Level`            | Stress Level             | Float     |
+| `BMI_enc`                 | BMI Category             | Float     |
+| `Systolic`                | Systolic Blood Pressure  | Float     |
+| `Diastolic`               | Diastolic Blood Pressure | Float     |
+| `Heart Rate`              | Heart Rate               | Float     |
+| `Daily Steps`             | Daily Steps              | Float     |
+
+### Encoders
+
+- **`le_bmi.pkl`** — converts `"Normal"`, `"Overweight"`, `"Obese"` to numeric values
+- **`le_gender.pkl`** — gender encoding reference (implemented manually: Male=1, Female=0)
+- **`le_target.pkl`** — converts prediction index back to class label (`None`, `Insomnia`, `Sleep Apnea`)
+
+### Output Labels
+
+| Label         | Meaning                               |
+| ------------- | ------------------------------------- |
+| `None`        | No sleep disorder indicators detected |
+| `Insomnia`    | Insomnia indicators detected          |
+| `Sleep Apnea` | Sleep apnea indicators detected       |
+
+---
+
+## API Endpoints
+
+**Production Base URL:** `https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app`
+
+**Local Development Base URL:** `http://127.0.0.1:5000`
 
 ### `POST /register`
 
-Mendaftarkan pengguna baru.
+Register a new user account.
 
 **Request Body:**
 
@@ -209,17 +216,17 @@ Mendaftarkan pengguna baru.
 }
 ```
 
-**Response sukses (200):**
+**Success Response (200):**
 
 ```json
 {
   "status": "success",
   "message": "Registrasi berhasil!",
-  "user": { "id": 1, "username": "namapengguna" }
+  "user": { "id": 1, "username": "yourusername" }
 }
 ```
 
-**Response gagal (400):**
+**Error Response (400):**
 
 ```json
 {
@@ -232,7 +239,7 @@ Mendaftarkan pengguna baru.
 
 ### `POST /login`
 
-Autentikasi pengguna yang sudah terdaftar.
+Authenticate an existing user.
 
 **Request Body:**
 
@@ -243,17 +250,17 @@ Autentikasi pengguna yang sudah terdaftar.
 }
 ```
 
-**Response sukses (200):**
+**Success Response (200):**
 
 ```json
 {
   "status": "success",
   "message": "Login berhasil!",
-  "user": { "id": 1, "username": "namapengguna" }
+  "user": { "id": 1, "username": "yourusername" }
 }
 ```
 
-**Response gagal (401):**
+**Error Response (401):**
 
 ```json
 {
@@ -266,7 +273,7 @@ Autentikasi pengguna yang sudah terdaftar.
 
 ### `POST /predict`
 
-Menjalankan prediksi gangguan tidur dan menyimpan hasilnya ke database.
+Run a sleep disorder prediction and save the result to the database.
 
 **Request Body:**
 
@@ -287,7 +294,7 @@ Menjalankan prediksi gangguan tidur dan menyimpan hasilnya ke database.
 }
 ```
 
-**Response sukses (200):**
+**Success Response (200):**
 
 ```json
 {
@@ -296,82 +303,53 @@ Menjalankan prediksi gangguan tidur dan menyimpan hasilnya ke database.
 }
 ```
 
-**Response gagal (200 dengan error):**
+---
 
-```json
-{
-  "status": "error",
-  "message": "Pesan error detail"
-}
-```
+## Tech Stack
+
+| Component     | Technology                                               |
+| ------------- | -------------------------------------------------------- |
+| Backend       | Python, Flask, Flask-CORS, Flask-SQLAlchemy              |
+| Database      | PostgreSQL, pg8000 (driver)                              |
+| ML Model      | XGBoost, joblib, pandas, scikit-learn                    |
+| Security      | Werkzeug (bcrypt password hashing)                       |
+| Frontend      | HTML5, CSS3 (CSS Variables), Vanilla JavaScript          |
+| Fonts         | Google Fonts — DM Serif Display, DM Sans                 |
+| Session       | `sessionStorage` (login), `localStorage` (local history) |
+| Frontend Host | Netlify                                                  |
+| Backend Host  | Railway                                                  |
+| Database Host | Railway (PostgreSQL managed service)                     |
 
 ---
 
-## Kebutuhan Sistem
+## Local Development Setup
 
-### Backend
+### Prerequisites
 
-- Python **3.10** atau lebih baru
-- PostgreSQL **13** atau lebih baru
+- Python 3.10 or newer
+- PostgreSQL 13 or newer
+- A modern browser (Chrome, Firefox, Edge, Safari)
 
-### Paket Python
-
-```
-Flask
-flask-cors
-flask-sqlalchemy
-pg8000
-werkzeug
-joblib
-pandas
-xgboost
-```
-
-### Frontend
-
-- Browser modern (Chrome, Firefox, Edge, Safari versi terbaru)
-- JavaScript diaktifkan
-- Tidak memerlukan build tools atau bundler
-
----
-
-## Cara Instalasi
-
-### 1. Clone atau unduh proyek
+### 1. Clone the Repository
 
 ```bash
-git clone <url-repo>
-cd Project-Matkul-AI
+git clone https://github.com/zefainzaghi/sadar-sleep-disorder-predictor-with-XAI.git
+cd sadar-sleep-disorder-predictor-with-XAI
 ```
 
-Atau navigasikan ke folder proyek yang sudah ada:
+### 2. Set Up PostgreSQL
 
-```bash
-cd "d:\Kuliah\Semester 4\Artificial Intelligence\Projek\Project-Matkul-AI"
-```
-
-### 2. Siapkan Database PostgreSQL
-
-Pastikan PostgreSQL sudah terinstall dan berjalan. Buat database baru:
+Make sure PostgreSQL is running locally, then create the database:
 
 ```sql
 CREATE DATABASE sadar;
 ```
 
-Sesuaikan kredensial database di `app.py` jika diperlukan:
-
-```python
-safe_password = urllib.parse.quote_plus("password_anda")
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+pg8000://postgres:{safe_password}@localhost:5432/sadar'
-```
-
-### 3. Buat Virtual Environment (direkomendasikan)
+### 3. Create and Activate a Virtual Environment
 
 ```bash
 python -m venv venv
 ```
-
-### 4. Aktifkan Virtual Environment
 
 **Windows PowerShell:**
 
@@ -391,15 +369,24 @@ venv\Scripts\activate.bat
 source venv/bin/activate
 ```
 
-### 5. Install Dependensi
+### 4. Install Dependencies
 
 ```bash
-pip install Flask flask-cors flask-sqlalchemy pg8000 werkzeug joblib pandas xgboost
+pip install -r requirements.txt
 ```
 
-### 6. Pastikan File Model Tersedia
+### 5. Configure the Database Connection
 
-Pastikan folder `Model/` ada dan berisi keempat file berikut:
+For local development, update `app.py` to point to your local PostgreSQL:
+
+```python
+safe_password = urllib.parse.quote_plus("your_password_here")
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+pg8000://postgres:{safe_password}@localhost:5432/sadar'
+```
+
+### 6. Verify Model Files
+
+Ensure the `Model/` folder contains all four required files:
 
 ```
 Model/
@@ -409,162 +396,150 @@ Model/
 └── le_target.pkl
 ```
 
----
-
-## Cara Menjalankan
-
-### 1. Jalankan Backend Flask
+### 7. Run the Backend
 
 ```bash
 python app.py
 ```
 
-Tabel database (`users` dan `prediction_history`) akan dibuat otomatis pada saat pertama kali dijalankan. Output terminal yang diharapkan:
+Database tables (`users` and `prediction_history`) are created automatically on first run. Expected terminal output:
 
 ```
  * Running on http://127.0.0.1:5000
  * Debug mode: on
 ```
 
-### 2. Buka Frontend di Browser
+### 8. Open the Frontend
 
-Buka file `landingPage.html` langsung di browser, atau gunakan server HTTP lokal agar path relatif bekerja dengan benar:
-
-**Opsi A — buka langsung (paling sederhana):**
-Klik dua kali `landingPage.html` atau drag ke jendela browser.
-
-**Opsi B — server HTTP lokal dengan Python:**
+Open `index.html` directly in a browser, or use a local HTTP server:
 
 ```bash
 python -m http.server 8080
+# Then visit: http://localhost:8080
 ```
 
-Kemudian buka `http://localhost:8080/landingPage.html` di browser.
-
-**Opsi C — ekstensi Live Server (VS Code):**
-Klik kanan pada `landingPage.html` → _Open with Live Server_.
-
-> **Catatan:** Backend Flask (port 5000) dan frontend harus berjalan bersamaan agar prediksi dapat dilakukan.
+> **Note:** For local development, make sure the API URLs in `login.html` and `js/dashboard.js` point to `http://127.0.0.1:5000` instead of the Railway production URL.
 
 ---
 
-## Penggunaan
+## Deployment
 
-1. **Buka `landingPage.html`** — pelajari fitur aplikasi dan jenis gangguan yang dapat dideteksi.
+This project uses a **decoupled deployment architecture** — frontend and backend are hosted on separate platforms.
 
-2. **Klik "Mulai Analisis"** untuk menuju halaman login.
+### Overview
 
-3. **Login atau Daftar** di `login.html`:
-   - Jika belum punya akun, klik "Belum punya akun? Daftar" untuk mendaftar.
-   - Masukkan username dan password, lalu klik tombol masuk.
+| Component | Platform | URL                                                                       |
+| --------- | -------- | ------------------------------------------------------------------------- |
+| Frontend  | Netlify  | https://sadarai.netlify.app                                               |
+| Backend   | Railway  | https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app |
+| Database  | Railway  | PostgreSQL managed service (internal)                                     |
 
-4. **Isi Formulir di Dashboard** — masukkan data kesehatan berikut:
+### Frontend — Netlify
 
-   | Bagian           | Field                                                                                |
-   | ---------------- | ------------------------------------------------------------------------------------ |
-   | Data Pribadi     | Usia, Jenis Kelamin                                                                  |
-   | Pola Tidur       | Durasi Tidur, Kualitas Tidur, Tingkat Stres, Aktivitas Fisik                         |
-   | Indikator Klinis | Kategori BMI, Tekanan Darah Sistolik & Diastolik, Detak Jantung, Langkah Kaki Harian |
+The frontend (HTML/CSS/JS) is deployed as a static site on Netlify, connected to this GitHub repository. Every push to the `main` branch triggers an automatic re-deploy.
 
-5. **Klik "Mulai Analisis AI"** — tunggu respons dari model (biasanya < 2 detik).
+### Backend — Railway
 
-6. **Baca Hasil Prediksi:**
-   - Label kondisi tidur (Sehat / Insomnia / Sleep Apnea)
-   - Panel XAI yang menjelaskan faktor-faktor penentu prediksi
-   - Daftar rekomendasi tindakan yang dipersonalisasi
+The Flask backend is deployed on Railway. It reads the `DATABASE_URL` environment variable (injected automatically via Railway's Variable Reference from the PostgreSQL service) to connect to the database.
 
-7. **Lihat Riwayat** di bagian bawah dashboard untuk memantau tren analisis dari waktu ke waktu.
+Key files required for Railway deployment:
 
----
+- **`Procfile`** — declares the process: `web: python app.py`
+- **`requirements.txt`** — lists all Python dependencies
+- **`app.py`** — reads `DATABASE_URL` and `PORT` from environment variables
 
-## Input & Validasi
+### Checking the Database (Production)
 
-| Field                   | Tipe    | Rentang/Nilai               | Contoh    |
-| ----------------------- | ------- | --------------------------- | --------- |
-| Usia                    | Angka   | 1 – 120 tahun               | 30        |
-| Jenis Kelamin           | Pilihan | Laki-laki / Perempuan       | Laki-laki |
-| Durasi Tidur            | Desimal | 1 – 24 jam                  | 6.5       |
-| Kualitas Tidur          | Slider  | 1 – 10                      | 7         |
-| Tingkat Stres           | Slider  | 1 – 10                      | 5         |
-| Aktivitas Fisik         | Angka   | 0 – 480 menit/hari          | 45        |
-| Kategori BMI            | Pilihan | Normal / Overweight / Obese | Normal    |
-| Tekanan Darah Sistolik  | Angka   | 80 – 200 mmHg               | 120       |
-| Tekanan Darah Diastolik | Angka   | 50 – 130 mmHg               | 80        |
-| Detak Jantung Istirahat | Angka   | 40 – 150 BPM                | 72        |
-| Langkah Kaki Harian     | Angka   | 0 – 40.000 langkah          | 6000      |
+To verify data in the production database, go to the Railway dashboard → Postgres service → **Data** or **Console** tab, then run:
 
-Semua field wajib diisi. Field yang kosong akan ditandai dengan border merah dan fokus akan diarahkan ke field pertama yang kosong.
+```sql
+-- Check registered users
+SELECT * FROM users;
+
+-- Check prediction history
+SELECT * FROM prediction_history;
+```
 
 ---
 
-## Output & Interpretasi Hasil
+## Usage Guide
 
-### Label Hasil
-
-| Label                | Ikon | Warna  | Interpretasi                                     |
-| -------------------- | ---- | ------ | ------------------------------------------------ |
-| Pola Tidur Sehat     | ✅   | Hijau  | Tidak terdeteksi gangguan, pertahankan kebiasaan |
-| Indikasi Insomnia    | ⚠️   | Kuning | Perlu perbaikan kebiasaan tidur dan kelola stres |
-| Indikasi Sleep Apnea | 🔴   | Merah  | Sangat disarankan konsultasi ke dokter           |
-
-### Panel Explainable AI (XAI)
-
-Menampilkan tiga faktor teratas yang paling memengaruhi prediksi beserta:
-
-- Nilai aktual yang dimasukkan pengguna
-- Persentase kontribusi relatif terhadap keputusan model
-- Status kualitatif (misalnya: "Sangat Rileks", "Aktif", "Ideal")
-- Deskripsi singkat pengaruh faktor tersebut
-
-### Ringkasan Keputusan
-
-Narasi otomatis yang merangkum dua faktor dominan dan menjelaskan apakah keputusan model didominasi satu faktor atau merupakan kombinasi beberapa faktor.
+1. **Visit** [sadarai.netlify.app](https://sadarai.netlify.app) to access the landing page.
+2. **Click "Mulai Analisis"** to go to the login page.
+3. **Register or Log In** — create a new account or log in with existing credentials.
+4. **Fill in the health form** on the dashboard with your data.
+5. **Click "Mulai Analisis AI"** — results appear in under 2 seconds.
+6. **Read your results** — prediction label, XAI factor breakdown, and personalized recommendations.
+7. **View your history** at the bottom of the dashboard to track trends over time.
 
 ---
 
-## Teknologi yang Digunakan
+## Input Fields & Validation
 
-| Komponen      | Teknologi                                                |
-| ------------- | -------------------------------------------------------- |
-| Backend       | Python, Flask, Flask-CORS, Flask-SQLAlchemy              |
-| Database      | PostgreSQL, pg8000 (driver)                              |
-| Model ML      | XGBoost, joblib, pandas                                  |
-| Keamanan      | Werkzeug (password hashing bcrypt)                       |
-| Frontend      | HTML5, CSS3 (CSS Variables), Vanilla JS                  |
-| Font          | Google Fonts — DM Serif Display, DM Sans                 |
-| Sesi Pengguna | `sessionStorage` (login), `localStorage` (riwayat lokal) |
+| Field                    | Type    | Range / Options             | Example |
+| ------------------------ | ------- | --------------------------- | ------- |
+| Age                      | Number  | 1 – 120 years               | 30      |
+| Gender                   | Select  | Male / Female               | Male    |
+| Sleep Duration           | Decimal | 1 – 24 hours                | 6.5     |
+| Sleep Quality            | Slider  | 1 – 10                      | 7       |
+| Stress Level             | Slider  | 1 – 10                      | 5       |
+| Physical Activity        | Number  | 0 – 480 min/day             | 45      |
+| BMI Category             | Select  | Normal / Overweight / Obese | Normal  |
+| Systolic Blood Pressure  | Number  | 80 – 200 mmHg               | 120     |
+| Diastolic Blood Pressure | Number  | 50 – 130 mmHg               | 80      |
+| Resting Heart Rate       | Number  | 40 – 150 BPM                | 72      |
+| Daily Steps              | Number  | 0 – 40,000 steps            | 6000    |
 
----
-
-## Catatan Pengembangan
-
-### Keterbatasan Saat Ini
-
-- Autentikasi tidak menggunakan token/JWT; sesi disimpan di `sessionStorage` yang tidak persisten antar tab.
-- Model tidak diperbarui secara _online_; prediksi berdasarkan data latih yang sudah ada.
-- Tidak ada mekanisme lupa password.
-- Riwayat lokal (`localStorage`) akan hilang jika pengguna membersihkan data browser.
-
-### Saran Pengembangan Lanjutan
-
-- Implementasi JWT untuk autentikasi yang lebih aman dan persisten.
-- Tambahkan halaman profil pengguna untuk melihat riwayat analisis dari database.
-- Visualisasi tren data (grafik) dari riwayat prediksi antar waktu.
-- Tambahkan validasi server-side untuk semua input sebelum diproses model.
-- Pertimbangkan deploy ke server cloud (misalnya: Heroku, Railway, atau VPS) agar dapat diakses publik.
-- Tambahkan fitur ekspor riwayat analisis ke PDF atau CSV.
-
-### Menjalankan di Lingkungan Berbeda
-
-Jika backend dan frontend berjalan di host atau port yang berbeda, sesuaikan URL endpoint di file berikut:
-
-- `login.html` — baris `fetch("http://127.0.0.1:5000/login")` dan `/register`
-- `js/dashboard.js` — baris `fetch("http://127.0.0.1:5000/predict")`
+All fields are required. Empty fields are highlighted with a red border and focus is directed to the first unfilled field.
 
 ---
 
-## Lisensi
+## Output & Result Interpretation
 
-Dokumen dan kode ini disediakan sebagai bagian dari tugas proyek akademik.
+### Result Labels
+
+| Label                 | Icon | Color  | Interpretation                                      |
+| --------------------- | ---- | ------ | --------------------------------------------------- |
+| Healthy Sleep         | ✅   | Green  | No disorder detected — maintain your current habits |
+| Insomnia Indicator    | ⚠️   | Yellow | Sleep habits and stress management need improvement |
+| Sleep Apnea Indicator | 🔴   | Red    | Strongly recommended to consult a doctor            |
+
+### Explainable AI (XAI) Panel
+
+Displays the top three factors most influencing the prediction, each showing:
+
+- The actual value entered by the user
+- Relative contribution percentage to the model's decision
+- Qualitative status (e.g., "Very Relaxed", "Active", "Ideal")
+- A brief description of the factor's influence
+
+### Decision Summary
+
+An auto-generated narrative summarizing the two dominant factors and explaining whether the model's decision was driven by a single factor or a combination of several.
+
+---
+
+## Development Notes
+
+### Current Limitations
+
+- Authentication does not use JWT tokens; sessions are stored in `sessionStorage` and do not persist across browser tabs.
+- The model is not updated online; predictions are based on the existing training data.
+- No password reset / forgot password mechanism.
+- Local history (`localStorage`) is cleared if the user clears browser data.
+
+### Potential Improvements
+
+- Implement JWT for more secure and persistent authentication.
+- Add a user profile page to display database-stored prediction history with charts.
+- Visualize prediction trends over time with graphs.
+- Add server-side input validation before passing data to the model.
+- Export analysis history to PDF or CSV.
+
+---
+
+## License
+
+This project was created as part of an academic course assignment.
 
 **SADAR** · Syifa · Zefa · Ranabil · 2026
