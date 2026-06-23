@@ -560,11 +560,14 @@ document.addEventListener("DOMContentLoaded", function () {
     submitBtn.disabled = true;
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        "sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/predict",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        },
+      );
 
       const resData = await response.json();
 
