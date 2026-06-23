@@ -561,7 +561,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       const response = await fetch(
-        "sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/predict",
+        "https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/predict",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -248,8 +248,8 @@
           const password = document.getElementById("auth-pass").value;
 
           const endpoint = isRegister
-            ? "sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/register"
-            : "sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/login";
+            ? "https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/register"
+            : "https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/login";
 
           try {
             const response = await fetch(endpoint, {
