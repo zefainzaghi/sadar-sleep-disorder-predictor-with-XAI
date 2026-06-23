@@ -2,71 +2,71 @@ const STORAGE_KEY = "rs_history";
 
 const RECOMMENDATIONS = {
   None: {
-    label: "Pola Tidur Sehat",
+    label: "Healthy Sleep Pattern",
     tagClass: "tag-sage",
     dotClass: "dot-sage",
     borderColor: "var(--sage)",
-    intro: "Tidak terdeteksi gangguan tidur. Pertahankan kebiasaan ini:",
+    intro: "No sleep disorder detected. Maintain these habits:",
     tips: [
-      "Jaga konsistensi jam tidur dan bangun, termasuk di akhir pekan.",
-      "Pertahankan durasi tidur 7–9 jam per malam.",
-      "Tetap aktif, aktivitas fisik rutin menjaga kualitas tidur jangka panjang.",
-      "Paparan sinar matahari pagi membantu mengatur ritme sirkadian.",
-      "Pantau stres harianmu, lonjakan stres adalah sinyal paling awal gangguan tidur.",
+      "Maintain consistent sleep and wake times, including on weekends.",
+      "Maintain a sleep duration of 7–9 hours per night.",
+      "Stay active; regular physical activity maintains long-term sleep quality.",
+      "Morning sunlight exposure helps regulate your circadian rhythm.",
+      "Monitor your daily stress; a spike in stress is the earliest sign of a sleep disorder.",
     ],
     verdictIcon: "✅",
-    verdictTitle: "Tidak terdeteksi gangguan tidur",
+    verdictTitle: "No sleep disorder detected",
     verdictDesc:
-      "Parameter tubuhmu berada dalam rentang normal. Model AI tidak menemukan pola yang berkaitan dengan gangguan tidur.",
+      "Your body parameters are within the normal range. The AI model found no patterns related to sleep disorders.",
     verdictClass: "verdict-normal",
     accentColor: "var(--sage)",
-    insightPrefix: "Faktor yang paling melindungimu dari gangguan tidur adalah",
+    insightPrefix: "The factor that most protects you from sleep disorders is",
   },
   Insomnia: {
-    label: "Indikasi Insomnia",
+    label: "Insomnia Indication",
     tagClass: "tag-sand",
     dotClass: "dot-sand",
     borderColor: "var(--sand)",
-    intro: "Terdeteksi risiko insomnia. Langkah yang bisa mulai kamu coba:",
+    intro: "Insomnia risk detected. Steps you can start trying:",
     tips: [
-      "Tetapkan rutinitas tidur yang konsisten, tidur dan bangun di jam yang sama setiap hari.",
-      "Hindari layar HP/laptop minimal 45 menit sebelum tidur. Cahaya biru menekan produksi melatonin.",
-      "Coba teknik <strong>4-7-8</strong>: tarik napas 4 detik → tahan 7 detik → hembuskan 8 detik.",
-      "Batasi kafein setelah pukul 14.00 dan hindari alkohol, keduanya mengganggu siklus REM.",
-      "Jika tidak bisa tidur setelah 20 menit, keluar dari kasur dan lakukan aktivitas tenang.",
-      "Kelola stres harianmu, level stres tinggi adalah pemicu utama insomnia.",
+      "Establish a consistent sleep routine, going to bed and waking up at the same time every day.",
+      "Avoid phone/laptop screens for at least 45 minutes before bed. Blue light suppresses melatonin production.",
+      "Try the <strong>4-7-8</strong> technique: inhale for 4 seconds → hold for 7 seconds → exhale for 8 seconds.",
+      "Limit caffeine after 2:00 PM and avoid alcohol; both disrupt the REM cycle.",
+      "If you can't sleep after 20 minutes, get out of bed and do a relaxing activity.",
+      "Manage your daily stress; high stress levels are a major trigger for insomnia.",
     ],
     verdictIcon: "⚠️",
-    verdictTitle: "Terdeteksi indikasi Insomnia",
+    verdictTitle: "Insomnia indication detected",
     verdictDesc:
-      "Model AI mendeteksi pola yang konsisten dengan insomnia berdasarkan kombinasi faktor di bawah ini.",
+      "The AI model detected patterns consistent with insomnia based on the combination of factors below.",
     verdictClass: "verdict-insomnia",
     accentColor: "var(--sand)",
     insightPrefix:
-      "Faktor yang paling berkontribusi terhadap prediksi insomnia adalah",
+      "The factor contributing most to the insomnia prediction is",
   },
   "Sleep Apnea": {
-    label: "Indikasi Sleep Apnea",
+    label: "Sleep Apnea Indication",
     tagClass: "tag-red",
     dotClass: "dot-red",
     borderColor: "#d98080",
-    intro: "Terdeteksi risiko sleep apnea. Ini perlu perhatian lebih serius:",
+    intro: "Sleep apnea risk detected. This requires more serious attention:",
     tips: [
-      "<strong>Konsultasikan ke dokter</strong>. Sleep apnea memerlukan pemeriksaan resmi untuk diagnosis pasti.",
-      "Tidur dalam posisi miring (bukan telentang) dapat membantu membuka saluran pernapasan.",
-      "Jaga berat badan ideal. Kelebihan lemak di area leher mempersempit saluran napas.",
-      "Hindari alkohol dan obat penenang sebelum tidur, keduanya melemaskan otot tenggorokan.",
-      "Monitor tekanan darah secara berkala. Sleep apnea dan hipertensi saling memperburuk.",
-      "Pertimbangkan konsultasi mengenai alat CPAP jika gejala berlanjut.",
+      "<strong>Consult a doctor</strong>. Sleep apnea requires a formal examination for a definitive diagnosis.",
+      "Sleeping on your side (not your back) can help open the airways.",
+      "Maintain an ideal weight. Excess fat in the neck area narrows the airway.",
+      "Avoid alcohol and sedatives before bed; both relax the throat muscles.",
+      "Monitor your blood pressure regularly. Sleep apnea and hypertension worsen each other.",
+      "Consider consulting about a CPAP machine if symptoms persist.",
     ],
     verdictIcon: "🔴",
-    verdictTitle: "Terdeteksi indikasi Sleep Apnea",
+    verdictTitle: "Sleep Apnea indication detected",
     verdictDesc:
-      "Model AI mendeteksi kombinasi parameter yang berkaitan erat dengan sleep apnea. Segera konsultasikan ke tenaga medis.",
+      "The AI model detected a combination of parameters closely related to sleep apnea. Consult a medical professional immediately.",
     verdictClass: "verdict-apnea",
     accentColor: "#d98080",
     insightPrefix:
-      "Faktor risiko terbesar yang memicu prediksi sleep apnea adalah",
+      "The biggest risk factor triggering the sleep apnea prediction is",
   },
 };
 
@@ -85,7 +85,7 @@ function saveHistory(history) {
 
 /* ── DATE FORMAT ── */
 function formatDate(isoStr) {
-  return new Date(isoStr).toLocaleDateString("id-ID", {
+  return new Date(isoStr).toLocaleDateString("en-US", {
     day: "2-digit",
     month: "long",
     year: "numeric",
@@ -97,47 +97,47 @@ function renderHistory(history) {
   const container = document.getElementById("history-list");
   const empty = document.getElementById("history-empty");
 
-  if (!container) return;
+  if (container) {
+    if (!history.length) {
+      container.innerHTML = "";
+      if (empty) empty.style.display = "block";
+    } else {
+      if (empty) empty.style.display = "none";
 
-  if (!history.length) {
-    container.innerHTML = "";
-    if (empty) empty.style.display = "block";
-    return;
-  }
-  if (empty) empty.style.display = "none";
-
-  container.innerHTML = history
-    .slice()
-    .reverse()
-    .map((item) => {
-      const rec = RECOMMENDATIONS[item.result] || RECOMMENDATIONS["None"];
-      return `
-            <div class="history-item">
-                <div class="history-left">
-                    <span class="tag ${rec.tagClass}">
-                        <span class="dot ${rec.dotClass}"></span>
-                        ${rec.label}
-                    </span>
-                    <div class="history-meta">
-                        Tidur: <strong>${item.sleep_duration} jam</strong> &nbsp;·&nbsp;
-                        Kualitas: <strong>${item.quality_of_sleep || 5}/10</strong> &nbsp;·&nbsp;
-                        Stres: <strong>${item.stress_level || 5}/10</strong>
+      container.innerHTML = history
+        .slice()
+        .reverse()
+        .map((item) => {
+          const rec = RECOMMENDATIONS[item.result] || RECOMMENDATIONS["None"];
+          return `
+                <div class="history-item">
+                    <div class="history-left">
+                        <span class="tag ${rec.tagClass}">
+                            <span class="dot ${rec.dotClass}"></span>
+                            ${rec.label}
+                        </span>
+                        <div class="history-meta">
+                            Sleep: <strong>${item.sleep_duration} hours</strong> &nbsp;·&nbsp;
+                            Quality: <strong>${item.quality_of_sleep || 5}/10</strong> &nbsp;·&nbsp;
+                            Stress: <strong>${item.stress_level || 5}/10</strong>
+                        </div>
                     </div>
-                </div>
-                <div class="history-date">${formatDate(item.date)}</div>
-            </div>`;
-    })
-    .join("");
+                    <div class="history-date">${formatDate(item.date)}</div>
+                </div>`;
+        })
+        .join("");
 
-  const statTotal = document.getElementById("stat-total");
-  const statLast = document.getElementById("stat-last");
+      const statTotal = document.getElementById("stat-total");
+      const statLast = document.getElementById("stat-last");
 
-  if (statTotal) statTotal.textContent = history.length + " Kali";
+      if (statTotal) statTotal.textContent = history.length + " Times";
 
-  const last = history[history.length - 1];
-  if (last && statLast) {
-    const r = RECOMMENDATIONS[last.result] || RECOMMENDATIONS["None"];
-    statLast.textContent = r.label;
+      const last = history[history.length - 1];
+      if (last && statLast) {
+        const r = RECOMMENDATIONS[last.result] || RECOMMENDATIONS["None"];
+        statLast.textContent = r.label;
+      }
+    }
   }
 }
 
@@ -162,35 +162,35 @@ function computeFactors(result, data) {
   if (isNormal) {
     rawFactors = [
       {
-        name: "Tingkat Stres",
+        name: "Stress Level",
         value: `${stress}/10`,
         weight: (10 - stress) * 9,
         suffix:
           stress <= 4
-            ? "Sangat Rileks"
+            ? "Very Relaxed"
             : stress <= 6
-              ? "Terkontrol"
-              : "Perlu Perhatian",
+              ? "Controlled"
+              : "Needs Attention",
         description:
           stress <= 5
-            ? `Stres ${stress}/10 tergolong rendah, memberikan perlindungan kuat terhadap gangguan tidur.`
-            : `Stres ${stress}/10 masih dalam batas toleransi, namun perlu dipantau.`,
+            ? `Stress of ${stress}/10 is relatively low, providing strong protection against sleep disorders.`
+            : `Stress of ${stress}/10 is within tolerance limits but needs monitoring.`,
       },
       {
-        name: "Kualitas Tidur",
+        name: "Sleep Quality",
         value: `${quality}/10`,
         weight: quality * 8,
         suffix:
           quality >= 7
-            ? "Sangat Baik"
+            ? "Very Good"
             : quality >= 5
-              ? "Cukup"
-              : "Perlu Ditingkatkan",
-        description: `Kualitas tidur ${quality}/10 menunjukkan istirahat yang ${quality >= 7 ? "berkualitas" : "cukup memadai"}.`,
+              ? "Adequate"
+              : "Needs Improvement",
+        description: `Sleep quality of ${quality}/10 indicates ${quality >= 7 ? "high-quality" : "adequate"} rest.`,
       },
       {
-        name: "Durasi Tidur",
-        value: `${duration} jam`,
+        name: "Sleep Duration",
+        value: `${duration} hours`,
         weight:
           duration >= 7 && duration <= 9
             ? 78
@@ -199,134 +199,134 @@ function computeFactors(result, data) {
           duration >= 7 && duration <= 9
             ? "Ideal"
             : duration < 7
-              ? "Kurang"
-              : "Berlebih",
-        description: `Durasi ${duration} jam ${duration >= 7 && duration <= 9 ? "berada dalam rentang ideal 7–9 jam." : "di luar rentang optimal."}`,
+              ? "Lacking"
+              : "Excessive",
+        description: `A duration of ${duration} hours ${duration >= 7 && duration <= 9 ? "is within the ideal 7–9 hours range." : "is outside the optimal range."}`,
       },
       {
-        name: "Aktivitas Fisik",
-        value: `${physical} menit/hari`,
+        name: "Physical Activity",
+        value: `${physical} minutes/day`,
         weight: Math.min(physical * 0.85, 72),
         suffix:
           physical >= 45
-            ? "Aktif"
+            ? "Active"
             : physical >= 20
-              ? "Moderat"
-              : "Kurang Aktif",
-        description: `Aktivitas fisik ${physical} menit/hari membantu mengatur ritme sirkadian dan meningkatkan kualitas tidur.`,
+              ? "Moderate"
+              : "Less Active",
+        description: `Physical activity of ${physical} minutes/day helps regulate the circadian rhythm and improve sleep quality.`,
       },
       {
-        name: "Tekanan Darah Sistolik",
+        name: "Systolic Blood Pressure",
         value: `${systolic} mmHg`,
         weight: Math.max(80 - Math.abs(systolic - 120) * 1.2, 10),
         suffix:
-          systolic < 130 ? "Normal" : systolic < 140 ? "Elevated" : "Tinggi",
-        description: `Tekanan darah sistolik ${systolic} mmHg ${systolic < 130 ? "berada dalam rentang normal." : "sedikit di atas ideal."}`,
+          systolic < 130 ? "Normal" : systolic < 140 ? "Elevated" : "High",
+        description: `Systolic blood pressure of ${systolic} mmHg ${systolic < 130 ? "is within the normal range." : "is slightly above ideal."}`,
       },
     ];
   } else if (isApnea) {
     rawFactors = [
       {
-        name: "Tekanan Darah Sistolik",
+        name: "Systolic Blood Pressure",
         value: `${systolic} mmHg`,
         weight: Math.min(Math.abs(systolic - 115) * 1.8, 90),
         suffix:
           systolic >= 130
-            ? "Hipertensi"
+            ? "Hypertension"
             : systolic >= 125
               ? "Elevated"
               : "Borderline",
-        description: `Sistolik ${systolic} mmHg merupakan indikator kardiovaskular yang sangat berkorelasi dengan sleep apnea.`,
+        description: `Systolic pressure of ${systolic} mmHg is a cardiovascular indicator highly correlated with sleep apnea.`,
       },
       {
-        name: "Kategori BMI",
+        name: "BMI Category",
         value: bmi,
         weight: bmiRisk,
         suffix:
           bmi === "Obese"
-            ? "Risiko Tinggi"
+            ? "High Risk"
             : bmi === "Overweight"
-              ? "Risiko Sedang"
-              : "Risiko Rendah",
-        description: `BMI kategori ${bmi} berpengaruh langsung pada lebar saluran napas saat tidur.`,
+              ? "Medium Risk"
+              : "Low Risk",
+        description: `A BMI category of ${bmi} directly affects airway width during sleep.`,
       },
       {
-        name: "Detak Jantung",
+        name: "Heart Rate",
         value: `${hr} BPM`,
         weight: Math.min(Math.abs(hr - 68) * 1.5, 75),
-        suffix: hr > 80 ? "Elevated" : hr < 60 ? "Rendah" : "Normal",
-        description: `Detak jantung ${hr} BPM saat istirahat berkontribusi sebagai penanda kondisi kardiovaskular.`,
+        suffix: hr > 80 ? "Elevated" : hr < 60 ? "Low" : "Normal",
+        description: `A resting heart rate of ${hr} BPM contributes as a marker of cardiovascular condition.`,
       },
       {
-        name: "Kualitas Tidur",
+        name: "Sleep Quality",
         value: `${quality}/10`,
         weight: Math.max((10 - quality) * 8, 10),
         suffix:
-          quality <= 4 ? "Sangat Buruk" : quality <= 6 ? "Buruk" : "Moderat",
-        description: `Kualitas tidur ${quality}/10 menunjukkan gangguan istirahat yang khas pada penderita sleep apnea.`,
+          quality <= 4 ? "Very Poor" : quality <= 6 ? "Poor" : "Moderate",
+        description: `Sleep quality of ${quality}/10 indicates rest disruption typical of sleep apnea sufferers.`,
       },
       {
-        name: "Tingkat Stres",
+        name: "Stress Level",
         value: `${stress}/10`,
         weight: stress * 7.5,
         suffix:
-          stress >= 7 ? "Beban Tinggi" : stress >= 5 ? "Moderat" : "Terkontrol",
-        description: `Stres ${stress}/10 memperburuk respons tubuh terhadap gangguan pernapasan saat tidur.`,
+          stress >= 7 ? "High Burden" : stress >= 5 ? "Moderate" : "Controlled",
+        description: `Stress of ${stress}/10 worsens the body's response to breathing disruptions during sleep.`,
       },
     ];
   } else {
     // Insomnia
     rawFactors = [
       {
-        name: "Tingkat Stres",
+        name: "Stress Level",
         value: `${stress}/10`,
         weight: stress * 9,
         suffix:
           stress >= 7
-            ? "Pemicu Utama"
+            ? "Main Trigger"
             : stress >= 5
-              ? "Berkontribusi"
-              : "Moderat",
-        description: `Stres ${stress}/10 adalah pemicu paling dominan insomnia — pikiran aktif menghambat transisi ke tidur.`,
+              ? "Contributing"
+              : "Moderate",
+        description: `Stress of ${stress}/10 is the most dominant trigger for insomnia — an active mind hinders the transition to sleep.`,
       },
       {
-        name: "Kualitas Tidur",
+        name: "Sleep Quality",
         value: `${quality}/10`,
         weight: Math.max((10 - quality) * 9, 10),
         suffix:
           quality <= 4
-            ? "Sangat Buruk"
+            ? "Very Poor"
             : quality <= 6
-              ? "Terganggu"
-              : "Moderat",
-        description: `Kualitas tidur ${quality}/10 menandakan fragmentasi tidur yang khas pada insomnia.`,
+              ? "Disrupted"
+              : "Moderate",
+        description: `Sleep quality of ${quality}/10 indicates sleep fragmentation typical of insomnia.`,
       },
       {
-        name: "Durasi Tidur",
-        value: `${duration} jam`,
+        name: "Sleep Duration",
+        value: `${duration} hours`,
         weight: Math.max((7.5 - duration) * 18, 8),
         suffix:
-          duration < 6 ? "Sangat Kurang" : duration < 7 ? "Kurang" : "Cukup",
-        description: `Durasi ${duration} jam berada di bawah ambang restoratif, memperparah siklus insomnia.`,
+          duration < 6 ? "Very Lacking" : duration < 7 ? "Lacking" : "Adequate",
+        description: `A duration of ${duration} hours is below the restorative threshold, exacerbating the insomnia cycle.`,
       },
       {
-        name: "Aktivitas Fisik",
-        value: `${physical} menit/hari`,
+        name: "Physical Activity",
+        value: `${physical} minutes/day`,
         weight: Math.max(65 - physical, 8),
         suffix:
           physical < 20
-            ? "Sangat Kurang"
+            ? "Very Lacking"
             : physical < 40
-              ? "Kurang"
-              : "Moderat",
-        description: `Aktivitas fisik ${physical} menit/hari yang rendah mengurangi tekanan tidur alami tubuh.`,
+              ? "Lacking"
+              : "Moderate",
+        description: `Low physical activity of ${physical} minutes/day reduces the body's natural sleep drive.`,
       },
       {
-        name: "Detak Jantung",
+        name: "Heart Rate",
         value: `${hr} BPM`,
         weight: Math.min(Math.abs(hr - 68) * 1.3, 70),
         suffix: hr > 78 ? "Elevated" : "Normal",
-        description: `Detak jantung ${hr} BPM saat istirahat mencerminkan aktivasi sistem saraf simpatis yang mengganggu tidur.`,
+        description: `A resting heart rate of ${hr} BPM reflects sympathetic nervous system activation that disrupts sleep.`,
       },
     ];
   }
@@ -340,119 +340,120 @@ function computeFactors(result, data) {
 function renderResult(result, data) {
   const rec = RECOMMENDATIONS[result] || RECOMMENDATIONS["None"];
   const card = document.getElementById("result-card");
-  if (!card) return;
+  
+  if (card) {
+    // Header & meta
+    card.style.borderLeftColor = rec.borderColor;
+    const labelEl = document.getElementById("res-label");
+    labelEl.textContent = rec.label;
+    labelEl.className = "tag " + rec.tagClass;
+    document.getElementById("res-intro").textContent = rec.intro;
+    document.getElementById("res-dur").textContent = data.sleep_duration;
+    document.getElementById("res-quality").textContent = data.quality_of_sleep;
+    document.getElementById("res-stress").textContent = data.stress_level;
+    document.getElementById("res-tips").innerHTML = rec.tips
+      .map((t) => "<li>" + t + "</li>")
+      .join("");
 
-  // Header & meta
-  card.style.borderLeftColor = rec.borderColor;
-  const labelEl = document.getElementById("res-label");
-  labelEl.textContent = rec.label;
-  labelEl.className = "tag " + rec.tagClass;
-  document.getElementById("res-intro").textContent = rec.intro;
-  document.getElementById("res-dur").textContent = data.sleep_duration;
-  document.getElementById("res-quality").textContent = data.quality_of_sleep;
-  document.getElementById("res-stress").textContent = data.stress_level;
-  document.getElementById("res-tips").innerHTML = rec.tips
-    .map((t) => "<li>" + t + "</li>")
-    .join("");
+    // XAI summary text
+    document.getElementById("xai-summary").innerHTML =
+      `The XGBoost model analyzed <strong>11 parameters</strong> from the data you entered. Here is a transparent explanation of the factors most influencing the prediction of <strong>${rec.label}</strong>:`;
 
-  // XAI summary text
-  document.getElementById("xai-summary").innerHTML =
-    `Model XGBoost menganalisis <strong>11 parameter</strong> dari data yang kamu masukkan. Berikut adalah penjelasan transparan tentang faktor-faktor yang paling berpengaruh terhadap hasil prediksi <strong>${rec.label}</strong>:`;
+    // Verdict banner
+    const verdictEl = document.getElementById("xai-verdict");
+    verdictEl.className = "xai-verdict " + rec.verdictClass;
+    document.getElementById("verdict-icon").textContent = rec.verdictIcon;
+    document.getElementById("verdict-title").textContent = rec.verdictTitle;
+    document.getElementById("verdict-desc").textContent = rec.verdictDesc;
 
-  // Verdict banner
-  const verdictEl = document.getElementById("xai-verdict");
-  verdictEl.className = "xai-verdict " + rec.verdictClass;
-  document.getElementById("verdict-icon").textContent = rec.verdictIcon;
-  document.getElementById("verdict-title").textContent = rec.verdictTitle;
-  document.getElementById("verdict-desc").textContent = rec.verdictDesc;
-
-  // Compute factors
-  const factors = computeFactors(result, data);
-  const top3 = factors.slice(0, 3);
-  const othersSum = Math.round(
-    factors
-      .slice(3)
-      .reduce((s, f) => s + Math.min(Math.max(f.weight, 5), 95), 0) /
-      Math.max(factors.slice(3).length, 1),
-  );
-
-  // Normalize top 3 to cap at 95
-  const maxW = top3[0].weight || 1;
-  const top3Normalized = top3.map((f) => ({
-    ...f,
-    display: Math.round(Math.min(Math.max((f.weight / maxW) * 90, 8), 95)),
-  }));
-
-  const container = document.getElementById("xai-factors-list");
-  container.innerHTML = "";
-
-  top3Normalized.forEach((factor, idx) => {
-    const rank = ["🥇", "🥈", "🥉"][idx];
-    const colorStyle = `color: ${rec.accentColor};`;
-    const barStyle = `background: ${rec.accentColor};`;
-
-    container.insertAdjacentHTML(
-      "beforeend",
-      `
-            <div class="xai-bar-row">
-                <div class="xai-bar-meta">
-                    <span class="xai-factor-name">${rank} ${factor.name} <span style="font-weight:400; color:var(--muted);">(${factor.value})</span></span>
-                    <div class="xai-factor-right">
-                        <span class="xai-factor-pct" style="${colorStyle}">${factor.display}%</span>
-                        <span class="xai-factor-suffix">${factor.suffix}</span>
-                    </div>
-                </div>
-                <div class="xai-bar-track">
-                    <div class="xai-bar-fill" data-width="${factor.display}" style="${barStyle}"></div>
-                </div>
-                <p style="font-size:0.78rem; color:var(--muted); margin-top:5px; line-height:1.55;">${factor.description}</p>
-            </div>
-        `,
+    // Compute factors
+    const factors = computeFactors(result, data);
+    const top3 = factors.slice(0, 3);
+    const othersSum = Math.round(
+      factors
+        .slice(3)
+        .reduce((s, f) => s + Math.min(Math.max(f.weight, 5), 95), 0) /
+        Math.max(factors.slice(3).length, 1),
     );
-  });
 
-  // Others row
-  const othersDisplay = Math.min(Math.max(othersSum, 5), 40);
-  document.getElementById("xai-others-pct").textContent =
-    othersDisplay + "% kontribusi rata-rata";
+    // Normalize top 3 to cap at 95
+    const maxW = top3[0].weight || 1;
+    const top3Normalized = top3.map((f) => ({
+      ...f,
+      display: Math.round(Math.min(Math.max((f.weight / maxW) * 90, 8), 95)),
+    }));
 
-  // Natural language insight
-  const topFactor = top3[0];
-  const secondFactor = top3[1];
-  const insightEl = document.getElementById("xai-insight");
-  insightEl.style.borderLeftColor = rec.accentColor;
-  insightEl.innerHTML = `
-        <strong style="color:var(--moon);">💬 Ringkasan Keputusan Model:</strong><br>
-        ${rec.insightPrefix} <strong style="color:${rec.accentColor};">${topFactor.name}</strong> 
-        (${topFactor.value}), diikuti <strong>${secondFactor.name}</strong> (${secondFactor.value}). 
-        ${
-          top3Normalized[0].display >= 70
-            ? "Faktor ini dominan dan menjadi penentu utama keputusan model."
-            : "Keputusan model merupakan hasil kombinasi dari beberapa faktor yang saling memperkuat."
-        }
-    `;
+    const container = document.getElementById("xai-factors-list");
+    container.innerHTML = "";
 
-  // Show card
-  card.style.display = "block";
+    top3Normalized.forEach((factor, idx) => {
+      const rank = ["🥇", "🥈", "🥉"][idx];
+      const colorStyle = `color: ${rec.accentColor};`;
+      const barStyle = `background: ${rec.accentColor};`;
 
-  // Animate bars after render
-  setTimeout(() => {
-    document.querySelectorAll(".xai-bar-fill").forEach((bar) => {
-      bar.style.width = bar.dataset.width + "%";
+      container.insertAdjacentHTML(
+        "beforeend",
+        `
+              <div class="xai-bar-row">
+                  <div class="xai-bar-meta">
+                      <span class="xai-factor-name">${rank} ${factor.name} <span style="font-weight:400; color:var(--muted);">(${factor.value})</span></span>
+                      <div class="xai-factor-right">
+                          <span class="xai-factor-pct" style="${colorStyle}">${factor.display}%</span>
+                          <span class="xai-factor-suffix">${factor.suffix}</span>
+                      </div>
+                  </div>
+                  <div class="xai-bar-track">
+                      <div class="xai-bar-fill" data-width="${factor.display}" style="${barStyle}"></div>
+                  </div>
+                  <p style="font-size:0.78rem; color:var(--muted); margin-top:5px; line-height:1.55;">${factor.description}</p>
+              </div>
+          `,
+      );
     });
-    card.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 80);
+
+    // Others row
+    const othersDisplay = Math.min(Math.max(othersSum, 5), 40);
+    document.getElementById("xai-others-pct").textContent =
+      othersDisplay + "% average contribution";
+
+    // Natural language insight
+    const topFactor = top3[0];
+    const secondFactor = top3[1];
+    const insightEl = document.getElementById("xai-insight");
+    insightEl.style.borderLeftColor = rec.accentColor;
+    insightEl.innerHTML = `
+          <strong style="color:var(--moon);">💬 Model Decision Summary:</strong><br>
+          ${rec.insightPrefix} <strong style="color:${rec.accentColor};">${topFactor.name}</strong> 
+          (${topFactor.value}), followed by <strong>${secondFactor.name}</strong> (${secondFactor.value}). 
+          ${
+            top3Normalized[0].display >= 70
+              ? "This factor is dominant and is the main determinant of the model's decision."
+              : "The model's decision is the result of a combination of mutually reinforcing factors."
+          }
+      `;
+
+    // Show card
+    card.style.display = "block";
+
+    // Animate bars after render
+    setTimeout(() => {
+      document.querySelectorAll(".xai-bar-fill").forEach((bar) => {
+        bar.style.width = bar.dataset.width + "%";
+      });
+      card.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  }
 }
 
 /* ── USER INIT ── */
 function initUser() {
-  var user = { name: "Pengguna", email: "" };
+  var user = { name: "User", email: "" };
   try {
     var stored = sessionStorage.getItem("rs_user");
     if (stored) user = JSON.parse(stored);
   } catch (e) {}
 
-  var name = user.name || "Pengguna";
+  var name = user.name || "User";
   var parts = name.trim().split(" ");
   var initials =
     parts.length >= 2
@@ -470,7 +471,7 @@ function initUser() {
   if (el.name) el.name.textContent = name;
   if (el.email) el.email.textContent = user.email || "";
   if (el.joined) {
-    el.joined.textContent = new Date().toLocaleDateString("id-ID", {
+    el.joined.textContent = new Date().toLocaleDateString("en-US", {
       month: "long",
       year: "numeric",
     });
@@ -478,120 +479,118 @@ function initUser() {
 }
 
 /* ── FORM SUBMIT ── */
-/* ── FORM SUBMIT ── */
 document.addEventListener("DOMContentLoaded", function () {
   initUser();
   renderHistory(loadHistory());
 
   var form = document.getElementById("predict-form");
-  if (!form) return;
+  if (form) {
+    // Make sure requiredFields array is defined to avoid errors during validation
+    const requiredFields = [
+      "age",
+      "gender",
+      "sleep_duration",
+      "quality_of_sleep",
+      "physical_activity",
+      "stress_level",
+      "bmi",
+      "systolic",
+      "diastolic",
+      "heart_rate",
+      "daily_steps",
+    ];
 
-  // Pastikan array requiredFields didefinisikan agar tidak memicu error saat validasi
-  const requiredFields = [
-    "age",
-    "gender",
-    "sleep_duration",
-    "quality_of_sleep",
-    "physical_activity",
-    "stress_level",
-    "bmi",
-    "systolic",
-    "diastolic",
-    "heart_rate",
-    "daily_steps",
-  ];
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    // Reset styling error sebelum validasi ulang
-    requiredFields.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.style.borderColor = "";
-    });
-
-    // Validasi input kosong
-    var emptyFields = requiredFields.filter(function (id) {
-      var el = document.getElementById(id);
-      return !el || el.value === "" || el.value === null;
-    });
-
-    if (emptyFields.length > 0) {
-      emptyFields.forEach(function (id) {
+      // Reset styling error before revalidating
+      requiredFields.forEach(function (id) {
         var el = document.getElementById(id);
-        if (el) el.style.borderColor = "#d98080";
+        if (el) el.style.borderColor = "";
       });
-      var firstEl = document.getElementById(emptyFields[0]);
-      if (firstEl) {
-        firstEl.scrollIntoView({ behavior: "smooth", block: "center" });
-        firstEl.focus();
-      }
-      return;
-    }
 
-    const currentUser = JSON.parse(sessionStorage.getItem("rs_user"));
-    const userId = currentUser ? currentUser.id : null;
+      // Validate empty inputs
+      var emptyFields = requiredFields.filter(function (id) {
+        var el = document.getElementById(id);
+        return !el || el.value === "" || el.value === null;
+      });
 
-    const systolicVal = document.getElementById("systolic").value;
-    const diastolicVal = document.getElementById("diastolic").value;
-    const bloodPressureString = `${systolicVal}/${diastolicVal}`;
-
-    const data = {
-      user_id: userId,
-      age: document.getElementById("age").value,
-      gender: document.getElementById("gender").value,
-      sleep_duration: document.getElementById("sleep_duration").value,
-      quality_of_sleep: document.getElementById("quality_of_sleep").value,
-      physical_activity: document.getElementById("physical_activity").value,
-      stress_level: document.getElementById("stress_level").value,
-      bmi: document.getElementById("bmi").value,
-      blood_pressure: bloodPressureString,
-      systolic: systolicVal,
-      diastolic: diastolicVal,
-      heart_rate: document.getElementById("heart_rate").value,
-      daily_steps: document.getElementById("daily_steps").value,
-      date: new Date().toISOString(),
-    };
-
-    // Ubah status tombol menjadi loading
-    var submitBtn = form.querySelector('button[type="submit"]');
-    var originalBtnText = submitBtn.innerText;
-    submitBtn.innerText = "Menganalisis...";
-    submitBtn.disabled = true;
-
-    try {
-      const response = await fetch(
-        "https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/predict",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        },
-      );
-
-      const resData = await response.json();
-
-      if (resData.status === "success") {
-        var result = resData.prediction;
-        data.result = result;
-
-        var history = loadHistory();
-        history.push(data);
-        saveHistory(history);
-        renderHistory(history);
-
-        renderResult(result, data);
+      if (emptyFields.length > 0) {
+        emptyFields.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.style.borderColor = "#d98080";
+        });
+        var firstEl = document.getElementById(emptyFields[0]);
+        if (firstEl) {
+          firstEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          firstEl.focus();
+        }
       } else {
-        alert("Error dari model: " + (resData.message || "Unknown error"));
+        const currentUser = JSON.parse(sessionStorage.getItem("rs_user"));
+        const userId = currentUser ? currentUser.id : null;
+
+        const systolicVal = document.getElementById("systolic").value;
+        const diastolicVal = document.getElementById("diastolic").value;
+        const bloodPressureString = `${systolicVal}/${diastolicVal}`;
+
+        const data = {
+          user_id: userId,
+          age: document.getElementById("age").value,
+          gender: document.getElementById("gender").value,
+          sleep_duration: document.getElementById("sleep_duration").value,
+          quality_of_sleep: document.getElementById("quality_of_sleep").value,
+          physical_activity: document.getElementById("physical_activity").value,
+          stress_level: document.getElementById("stress_level").value,
+          bmi: document.getElementById("bmi").value,
+          blood_pressure: bloodPressureString,
+          systolic: systolicVal,
+          diastolic: diastolicVal,
+          heart_rate: document.getElementById("heart_rate").value,
+          daily_steps: document.getElementById("daily_steps").value,
+          date: new Date().toISOString(),
+        };
+
+        // Change button status to loading
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = "Analyzing...";
+        submitBtn.disabled = true;
+
+        try {
+          const response = await fetch(
+            "https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/predict",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            },
+          );
+
+          const resData = await response.json();
+
+          if (resData.status === "success") {
+            var result = resData.prediction;
+            data.result = result;
+
+            var history = loadHistory();
+            history.push(data);
+            saveHistory(history);
+            renderHistory(history);
+
+            renderResult(result, data);
+          } else {
+            alert("Error from model: " + (resData.message || "Unknown error"));
+          }
+        } catch (error) {
+          console.error("API Error:", error);
+          alert(
+            "Failed to connect to the AI model. Make sure the app.py file is running in the terminal.",
+          );
+        } finally {
+          submitBtn.innerText = originalBtnText;
+          submitBtn.disabled = false;
+        }
       }
-    } catch (error) {
-      console.error("API Error:", error);
-      alert(
-        "Gagal terhubung ke model AI. Pastikan file app.py sedang berjalan di terminal.",
-      );
-    } finally {
-      submitBtn.innerText = originalBtnText;
-      submitBtn.disabled = false;
-    }
-  });
+    });
+  }
 });
