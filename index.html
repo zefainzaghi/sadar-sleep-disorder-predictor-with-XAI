@@ -1,383 +1,399 @@
 <!doctype html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SADAR — Sleep Disorder Detector With XAI</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <style>
-      /* ── HERO ── */
-      .hero {
-        position: relative;
-        z-index: 1;
-        min-height: calc(100vh - 72px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 0 7%;
-      }
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SADAR — Sleep Apnea & Disorder Advanced Reasoning</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <style>
+            /* ── HERO ── */
+            .hero {
+                position: relative;
+                z-index: 1;
+                min-height: calc(100vh - 72px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 0 7%;
+            }
 
-      .hero-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.8rem;
-        color: var(--muted);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 28px;
-      }
-      .hero-eyebrow::before {
-        content: "";
-        display: block;
-        width: 28px;
-        height: 1px;
-        background: var(--sage);
-      }
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 0.8rem;
+                color: var(--muted);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-bottom: 28px;
+            }
+            .hero-eyebrow::before {
+                content: '';
+                display: block;
+                width: 28px;
+                height: 1px;
+                background: var(--sage);
+            }
 
-      .hero h1 {
-        font-size: clamp(2.8rem, 6vw, 5rem);
-        max-width: 680px;
-        color: var(--moon);
-        margin-bottom: 20px;
-        line-height: 1.15;
-      }
-      .hero h1 em {
-        font-style: italic;
-        color: var(--sage);
-      }
+            .hero h1 {
+                font-size: clamp(2.8rem, 6vw, 5rem);
+                max-width: 680px;
+                color: var(--moon);
+                margin-bottom: 20px;
+                line-height: 1.15;
+            }
+            .hero h1 em {
+                font-style: italic;
+                color: var(--sage);
+            }
 
-      .hero p {
-        max-width: 460px;
-        color: var(--muted);
-        font-size: 1rem;
-        margin-bottom: 40px;
-        line-height: 1.75;
-      }
+            .hero p {
+                max-width: 460px;
+                color: var(--muted);
+                font-size: 1rem;
+                margin-bottom: 40px;
+                line-height: 1.75;
+            }
 
-      .hero-cta {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
+            .hero-cta {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
 
-      /* moon deco */
-      .moon-deco {
-        position: absolute;
-        right: 7%;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 320px;
-        height: 320px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle at 35% 35%,
-          #1e2d42,
-          var(--night) 70%
-        );
-        box-shadow:
-          inset -20px -20px 60px rgba(126, 170, 160, 0.12),
-          0 0 80px rgba(126, 170, 160, 0.06),
-          0 0 140px rgba(126, 170, 160, 0.03);
-        border: 1px solid rgba(126, 170, 160, 0.1);
-      }
-      .moon-deco::before {
-        content: "";
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: rgba(126, 170, 160, 0.07);
-        top: 22%;
-        left: 18%;
-      }
-      .moon-deco::after {
-        content: "";
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: rgba(126, 170, 160, 0.05);
-        top: 55%;
-        left: 58%;
-      }
+            /* moon deco */
+            .moon-deco {
+                position: absolute;
+                right: 7%;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 320px;
+                height: 320px;
+                border-radius: 50%;
+                background: radial-gradient(
+                    circle at 35% 35%,
+                    #1e2d42,
+                    var(--night) 70%
+                );
+                box-shadow:
+                    inset -20px -20px 60px rgba(126, 170, 160, 0.12),
+                    0 0 80px rgba(126, 170, 160, 0.06),
+                    0 0 140px rgba(126, 170, 160, 0.03);
+                border: 1px solid rgba(126, 170, 160, 0.1);
+            }
+            .moon-deco::before {
+                content: '';
+                position: absolute;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: rgba(126, 170, 160, 0.07);
+                top: 22%;
+                left: 18%;
+            }
+            .moon-deco::after {
+                content: '';
+                position: absolute;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: rgba(126, 170, 160, 0.05);
+                top: 55%;
+                left: 58%;
+            }
 
-      /* ── FEATURES ── */
-      .features {
-        position: relative;
-        z-index: 1;
-        padding: 80px 7%;
-        border-top: 1px solid var(--rim);
-      }
-      .features-label {
-        font-size: 0.78rem;
-        color: var(--muted);
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        margin-bottom: 48px;
-      }
-      .features-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-      }
-      .feature-card {
-        background: var(--surface);
-        border: 1px solid var(--rim);
-        border-radius: var(--r-lg);
-        padding: 28px;
-        transition:
-          border-color 0.2s,
-          background 0.2s;
-      }
-      .feature-card:hover {
-        border-color: rgba(126, 170, 160, 0.25);
-        background: var(--lift);
-      }
-      .feature-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: rgba(126, 170, 160, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 18px;
-        font-size: 1.1rem;
-      }
-      .feature-card h4 {
-        font-size: 1rem;
-        margin-bottom: 8px;
-        color: var(--moon);
-      }
-      .feature-card p {
-        font-size: 0.88rem;
-        color: var(--muted);
-        line-height: 1.65;
-      }
+            /* ── FEATURES ── */
+            .features {
+                position: relative;
+                z-index: 1;
+                padding: 80px 7%;
+                border-top: 1px solid var(--rim);
+            }
+            .features-label {
+                font-size: 0.78rem;
+                color: var(--muted);
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin-bottom: 48px;
+            }
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 24px;
+            }
+            .feature-card {
+                background: var(--surface);
+                border: 1px solid var(--rim);
+                border-radius: var(--r-lg);
+                padding: 28px;
+                transition:
+                    border-color 0.2s,
+                    background 0.2s;
+            }
+            .feature-card:hover {
+                border-color: rgba(126, 170, 160, 0.25);
+                background: var(--lift);
+            }
+            .feature-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: rgba(126, 170, 160, 0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 18px;
+                font-size: 1.1rem;
+            }
+            .feature-card h4 {
+                font-size: 1rem;
+                margin-bottom: 8px;
+                color: var(--moon);
+            }
+            .feature-card p {
+                font-size: 0.88rem;
+                color: var(--muted);
+                line-height: 1.65;
+            }
 
-      /* ── DISORDER INFO ── */
-      .disorders {
-        position: relative;
-        z-index: 1;
-        padding: 80px 7%;
-      }
-      .disorders h2 {
-        font-size: 2rem;
-        margin-bottom: 8px;
-      }
-      .disorders > p {
-        color: var(--muted);
-        margin-bottom: 40px;
-        font-size: 0.95rem;
-      }
-      .disorder-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-      }
-      .disorder-item {
-        background: var(--surface);
-        border: 1px solid var(--rim);
-        border-radius: var(--r-lg);
-        padding: 24px;
-      }
-      .disorder-item .d-label {
-        font-size: 0.75rem;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.07em;
-        margin-bottom: 10px;
-      }
-      .disorder-item h4 {
-        font-size: 1.05rem;
-        margin-bottom: 10px;
-      }
-      .disorder-item p {
-        font-size: 0.86rem;
-        color: var(--muted);
-      }
-      .disorder-item .symptoms {
-        margin-top: 14px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .sym-chip {
-        font-size: 0.75rem;
-        padding: 3px 10px;
-        background: var(--lift);
-        border: 1px solid var(--faint);
-        border-radius: 20px;
-        color: var(--muted);
-      }
+            /* ── DISORDER INFO ── */
+            .disorders {
+                position: relative;
+                z-index: 1;
+                padding: 80px 7%;
+            }
+            .disorders h2 {
+                font-size: 2rem;
+                margin-bottom: 8px;
+            }
+            .disorders > p {
+                color: var(--muted);
+                margin-bottom: 40px;
+                font-size: 0.95rem;
+            }
+            .disorder-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+            .disorder-item {
+                background: var(--surface);
+                border: 1px solid var(--rim);
+                border-radius: var(--r-lg);
+                padding: 24px;
+            }
+            .disorder-item .d-label {
+                font-size: 0.75rem;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.07em;
+                margin-bottom: 10px;
+            }
+            .disorder-item h4 {
+                font-size: 1.05rem;
+                margin-bottom: 10px;
+            }
+            .disorder-item p {
+                font-size: 0.86rem;
+                color: var(--muted);
+            }
+            .disorder-item .symptoms {
+                margin-top: 14px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .sym-chip {
+                font-size: 0.75rem;
+                padding: 3px 10px;
+                background: var(--lift);
+                border: 1px solid var(--faint);
+                border-radius: 20px;
+                color: var(--muted);
+            }
 
-      /* ── CTA BAND ── */
-      .cta-band {
-        position: relative;
-        z-index: 1;
-        margin: 0 7% 80px;
-        background: linear-gradient(135deg, var(--surface) 0%, #151e30 100%);
-        border: 1px solid var(--rim);
-        border-radius: var(--r-lg);
-        padding: 48px 52px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 32px;
-      }
-      .cta-band h2 {
-        font-size: 1.8rem;
-        max-width: 380px;
-      }
-      .cta-band p {
-        color: var(--muted);
-        margin-top: 8px;
-        font-size: 0.9rem;
-        max-width: 340px;
-      }
+            /* ── CTA BAND ── */
+            .cta-band {
+                position: relative;
+                z-index: 1;
+                margin: 0 7% 80px;
+                background: linear-gradient(
+                    135deg,
+                    var(--surface) 0%,
+                    #151e30 100%
+                );
+                border: 1px solid var(--rim);
+                border-radius: var(--r-lg);
+                padding: 48px 52px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 32px;
+            }
+            .cta-band h2 {
+                font-size: 1.8rem;
+                max-width: 380px;
+            }
+            .cta-band p {
+                color: var(--muted);
+                margin-top: 8px;
+                font-size: 0.9rem;
+                max-width: 340px;
+            }
 
-      @media (max-width: 900px) {
-        .moon-deco {
-          display: none;
-        }
-        .features-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .disorder-grid {
-          grid-template-columns: 1fr;
-        }
-        .cta-band {
-          flex-direction: column;
-        }
-      }
-      @media (max-width: 600px) {
-        .features-grid {
-          grid-template-columns: 1fr;
-        }
-        .hero h1 {
-          font-size: 2.4rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <nav>
-      <div class="logo">SADAR</div>
-      <div class="nav-links">
-        <a href="login.html">Masuk</a>
-        <a href="login.html" class="nav-cta">Mulai Analisis</a>
-      </div>
-    </nav>
-
-    <main>
-      <section class="hero">
-        <div class="moon-deco"></div>
-
-        <span class="hero-eyebrow">Deteksi Gangguan Tidur dengan AI</span>
-        <h1>Tidur lebih tenang,<br />bangun lebih <em>segar</em>.</h1>
-        <p>
-          Evaluasi pola tidurmu secara mandiri. Dapatkan analisis personal
-          berbasis data dan langkah nyata untuk memulihkan siklus tidur alamimu.
-        </p>
-        <div class="hero-cta">
-          <a href="login.html" class="btn btn-primary">Analisis Tidur Saya</a>
-          <a href="#gangguan" class="btn btn-secondary">Kenali Gejalamu</a>
-        </div>
-      </section>
-
-      <section class="features">
-        <p class="features-label">Cara Kerja</p>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">🌙</div>
-            <h4>Isi Keluhan Tidurmu</h4>
-            <p>
-              Ceritakan pola tidurmu — durasi, kualitas, dan gejala yang kamu
-              rasakan malam ini.
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🧠</div>
-            <h4>Analisis Model AI</h4>
-            <p>
-              Sistem kami memproses inputmu dan mengidentifikasi pola yang
-              berkaitan dengan gangguan tidur.
-            </p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">📋</div>
-            <h4>Rekomendasi Personal</h4>
-            <p>
-              Terima saran sleep hygiene yang disesuaikan dengan kondisi
-              spesifikmu, bukan saran generik.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="disorders" id="gangguan">
-        <h2>Kenali Gangguan Tidurmu</h2>
-        <p>Tiga kondisi paling umum yang bisa terdeteksi dari pola tidurmu.</p>
-        <div class="disorder-grid">
-          <div class="disorder-item">
-            <div class="d-label">01 — Paling Umum</div>
-            <h4>Insomnia</h4>
-            <p>
-              Kesulitan memulai atau mempertahankan tidur, meskipun ada
-              kesempatan dan kondisi yang cukup untuk tidur.
-            </p>
-            <div class="symptoms">
-              <span class="sym-chip">Sulit tertidur</span>
-              <span class="sym-chip">Bangun terlalu awal</span>
-              <span class="sym-chip">Lelah di siang hari</span>
+            @media (max-width: 900px) {
+                .moon-deco {
+                    display: none;
+                }
+                .features-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+                .disorder-grid {
+                    grid-template-columns: 1fr;
+                }
+                .cta-band {
+                    flex-direction: column;
+                }
+            }
+            @media (max-width: 600px) {
+                .features-grid {
+                    grid-template-columns: 1fr;
+                }
+                .hero h1 {
+                    font-size: 2.4rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div class="logo">SADAR</div>
+            <div class="nav-links">
+                <a href="login.html">Sign In</a>
+                <a href="login.html" class="nav-cta">Start Analysis</a>
             </div>
-          </div>
-          <div class="disorder-item">
-            <div class="d-label">02 — Pernapasan</div>
-            <h4>Sleep Apnea</h4>
-            <p>
-              Pernapasan berulang kali terhenti dan dimulai kembali saat tidur,
-              sering tidak disadari penderita.
-            </p>
-            <div class="symptoms">
-              <span class="sym-chip">Mendengkur keras</span>
-              <span class="sym-chip">Sesak saat bangun</span>
-              <span class="sym-chip">Kantuk berlebihan</span>
-            </div>
-          </div>
-          <div class="disorder-item">
-            <div class="d-label">03 — Tidur Normal</div>
-            <h4>Pola Sehat</h4>
-            <p>
-              Tidur 7–9 jam dengan kualitas baik dan bangun dengan segar adalah
-              tanda pola tidur yang sehat.
-            </p>
-            <div class="symptoms">
-              <span class="sym-chip">Mudah tertidur</span>
-              <span class="sym-chip">Jarang terbangun</span>
-              <span class="sym-chip">Bangun segar</span>
-            </div>
-          </div>
-        </div>
-      </section>
+        </nav>
 
-      <div class="cta-band">
-        <div>
-          <h2>Sudah siap memahami tidurmu?</h2>
-          <p>Butuh kurang dari 2 menit. Tidak perlu peralatan khusus.</p>
-        </div>
-        <a
-          href="login.html"
-          class="btn btn-primary"
-          style="flex-shrink: 0; white-space: nowrap"
-          >Mulai Sekarang</a
-        >
-      </div>
-    </main>
+        <main>
+            <section class="hero">
+                <div class="moon-deco"></div>
 
-    <footer>
-      <p>SADAR &nbsp;·&nbsp; Syifa - Zefa - Ranabil &nbsp;·&nbsp; 2026</p>
-    </footer>
-  </body>
+                <span class="hero-eyebrow">AI Sleep Disorder Detection</span>
+                <h1>Sleep peacefully,<br />wake up <em>refreshed</em>.</h1>
+                <p>
+                    Evaluate your sleep patterns independently. Get
+                    personalized, data-driven analysis and actionable steps to
+                    restore your natural sleep cycle.
+                </p>
+                <div class="hero-cta">
+                    <a href="login.html" class="btn btn-primary"
+                        >Analyze My Sleep</a
+                    >
+                    <a href="#gangguan" class="btn btn-secondary"
+                        >Know Your Symptoms</a
+                    >
+                </div>
+            </section>
+
+            <section class="features">
+                <p class="features-label">How It Works</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌙</div>
+                        <h4>Log Your Sleep Complaints</h4>
+                        <p>
+                            Tell us about your sleep patterns — duration,
+                            quality, and symptoms you experience tonight.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h4>AI Model Analysis</h4>
+                        <p>
+                            Our system processes your input and identifies
+                            patterns related to sleep disorders.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h4>Personalized Recommendations</h4>
+                        <p>
+                            Receive sleep hygiene advice tailored to your
+                            specific condition, not generic suggestions.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="disorders" id="gangguan">
+                <h2>Understand Your Sleep Disorders</h2>
+                <p>
+                    The three most common conditions that can be detected from
+                    your sleep patterns.
+                </p>
+                <div class="disorder-grid">
+                    <div class="disorder-item">
+                        <div class="d-label">01 — Most Common</div>
+                        <h4>Insomnia</h4>
+                        <p>
+                            Difficulty falling or staying asleep, despite having
+                            adequate opportunity and conditions for sleep.
+                        </p>
+                        <div class="symptoms">
+                            <span class="sym-chip">Hard to fall asleep</span>
+                            <span class="sym-chip">Waking up too early</span>
+                            <span class="sym-chip">Daytime fatigue</span>
+                        </div>
+                    </div>
+                    <div class="disorder-item">
+                        <div class="d-label">02 — Respiratory</div>
+                        <h4>Sleep Apnea</h4>
+                        <p>
+                            Breathing repeatedly stops and starts during sleep,
+                            often unnoticed by the sufferer.
+                        </p>
+                        <div class="symptoms">
+                            <span class="sym-chip">Loud snoring</span>
+                            <span class="sym-chip"
+                                >Shortness of breath upon waking</span
+                            >
+                            <span class="sym-chip">Excessive sleepiness</span>
+                        </div>
+                    </div>
+                    <div class="disorder-item">
+                        <div class="d-label">03 — Normal Sleep</div>
+                        <h4>Healthy Pattern</h4>
+                        <p>
+                            Sleeping 7–9 hours with good quality and waking up
+                            refreshed is a sign of a healthy sleep pattern.
+                        </p>
+                        <div class="symptoms">
+                            <span class="sym-chip">Easy to fall asleep</span>
+                            <span class="sym-chip">Rarely wake up</span>
+                            <span class="sym-chip">Wake up refreshed</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="cta-band">
+                <div>
+                    <h2>Ready to understand your sleep?</h2>
+                    <p>
+                        Takes less than 2 minutes. No special equipment needed.
+                    </p>
+                </div>
+                <a
+                    href="login.html"
+                    class="btn btn-primary"
+                    style="flex-shrink: 0; white-space: nowrap"
+                    >Start Now</a
+                >
+            </div>
+        </main>
+
+        <footer>
+            <p>SADAR &nbsp;·&nbsp; Syifa - Zefa - Ranabil &nbsp;·&nbsp; 2026</p>
+        </footer>
+    </body>
 </html>

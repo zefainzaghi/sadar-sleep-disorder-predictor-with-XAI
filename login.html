@@ -1,284 +1,301 @@
 <!doctype html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SADAR</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        position: relative;
-      }
-
-      /* ambient glow */
-      .glow {
-        position: fixed;
-        width: 500px;
-        height: 500px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(126, 170, 160, 0.06) 0%,
-          transparent 70%
-        );
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      .auth-wrapper {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        max-width: 420px;
-        padding: 0 16px;
-      }
-
-      .auth-header {
-        text-align: center;
-        margin-bottom: 36px;
-      }
-      .auth-header .logo-sm {
-        font-family: "DM Serif Display", serif;
-        font-size: 1.2rem;
-        color: var(--moon);
-        margin-bottom: 28px;
-        display: block;
-      }
-      .auth-header .logo-sm span {
-        color: var(--sage);
-      }
-      .auth-header h2 {
-        font-size: 1.9rem;
-        margin-bottom: 6px;
-      }
-      .auth-header p {
-        color: var(--muted);
-        font-size: 0.88rem;
-      }
-
-      .auth-card {
-        background: var(--surface);
-        border: 1px solid var(--rim);
-        border-radius: var(--r-lg);
-        padding: 36px 32px;
-      }
-
-      .form-group {
-        margin-bottom: 18px;
-      }
-
-      .auth-btn {
-        width: 100%;
-        padding: 13px;
-        background: var(--sage);
-        color: var(--night);
-        border: none;
-        border-radius: var(--r);
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.95rem;
-        font-weight: 500;
-        cursor: pointer;
-        margin-top: 6px;
-        transition:
-          opacity 0.2s,
-          transform 0.2s;
-      }
-      .auth-btn:hover {
-        opacity: 0.88;
-        transform: translateY(-1px);
-      }
-
-      .toggle-row {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 0.86rem;
-        color: var(--muted);
-      }
-      .toggle-row span {
-        color: var(--sage);
-        cursor: pointer;
-        font-weight: 500;
-      }
-      .toggle-row span:hover {
-        text-decoration: underline;
-      }
-
-      .back-link {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        font-size: 0.83rem;
-        color: var(--muted);
-        text-decoration: none;
-        transition: color 0.2s;
-      }
-      .back-link:hover {
-        color: var(--moon);
-      }
-
-      /* name field hidden by default */
-      #name-group {
-        display: none;
-      }
-
-      /* slide animation on switch */
-      .auth-card {
-        transition: transform 0.1s ease;
-      }
-
-      /* error / info */
-      .form-info {
-        font-size: 0.78rem;
-        color: var(--muted);
-        margin-top: 4px;
-      }
-
-      .separator {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 20px 0;
-        color: var(--muted);
-        font-size: 0.78rem;
-      }
-      .separator::before,
-      .separator::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: var(--rim);
-      }
-    </style>
-  </head>
-  <body>
-    <div class="glow"></div>
-
-    <div class="auth-wrapper">
-      <div class="auth-header">
-        <a href="landingPage.html" class="logo-sm">SADAR</a>
-        <h2 id="auth-title">Selamat Datang</h2>
-        <p id="auth-subtitle">Masuk untuk melanjutkan analisis tidurmu.</p>
-      </div>
-
-      <div class="auth-card">
-        <form id="auth-form" action="dashboard.html">
-          <div class="form-group" id="name-group">
-            <label>Nama Lengkap</label>
-            <input type="text" id="auth-name" placeholder="Nama kamu" />
-          </div>
-          <div class="form-group">
-            <label>Username</label>
-            <input
-              type="text"
-              id="auth-username"
-              placeholder="Username"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              id="auth-pass"
-              placeholder="••••••••"
-              required
-            />
-            <p class="form-info" id="pass-hint" style="display: none">
-              Minimal 8 karakter.
-            </p>
-          </div>
-
-          <button type="submit" class="auth-btn" id="auth-submit">Masuk</button>
-        </form>
-
-        <div class="toggle-row">
-          <span id="toggle-trigger" onclick="toggleMode()"
-            >Belum punya akun? Daftar</span
-          >
-        </div>
-      </div>
-
-      <a href="landingPage.html" class="back-link">← Kembali ke beranda</a>
-    </div>
-
-    <script>
-      let isRegister = false;
-
-      function toggleMode() {
-        isRegister = !isRegister;
-        const title = document.getElementById("auth-title");
-        const subtitle = document.getElementById("auth-subtitle");
-        const nameGrp = document.getElementById("name-group");
-        const submit = document.getElementById("auth-submit");
-        const toggle = document.getElementById("toggle-trigger");
-        const passHint = document.getElementById("pass-hint");
-
-        if (isRegister) {
-          title.textContent = "Buat Akun Baru";
-          subtitle.textContent =
-            "Daftarkan dirimu untuk mulai memantau tidurmu.";
-          nameGrp.style.display = "block";
-          submit.textContent = "Buat Akun & Masuk";
-          toggle.textContent = "Sudah punya akun? Masuk";
-          passHint.style.display = "block";
-        } else {
-          title.textContent = "Selamat Datang";
-          subtitle.textContent = "Masuk untuk melanjutkan analisis tidurmu.";
-          nameGrp.style.display = "none";
-          submit.textContent = "Masuk";
-          toggle.textContent = "Belum punya akun? Daftar";
-          passHint.style.display = "none";
-        }
-      }
-
-      document
-        .getElementById("auth-form")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-
-          const username = document.getElementById("auth-username").value;
-          const password = document.getElementById("auth-pass").value;
-
-          const endpoint = isRegister
-            ? "https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/register"
-            : "https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/login";
-
-          try {
-            const response = await fetch(endpoint, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username, password }),
-            });
-
-            const resData = await response.json();
-
-            if (resData.status === "success") {
-              sessionStorage.setItem(
-                "rs_user",
-                JSON.stringify({
-                  id: resData.user.id,
-                  name: resData.user.username,
-                }),
-              );
-
-              alert(resData.message);
-              window.location.href = "dashboard.html";
-            } else {
-              alert("Gagal: " + resData.message);
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SADAR</title>
+        <link rel="stylesheet" href="css/style.css" />
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                position: relative;
             }
-          } catch (error) {
-            console.error("Error saat menghubungkan ke database:", error);
-            alert("Gagal terhubung dengan server backend SADAR.");
-          }
-        });
-    </script>
-  </body>
+
+            /* ambient glow */
+            .glow {
+                position: fixed;
+                width: 500px;
+                height: 500px;
+                border-radius: 50%;
+                background: radial-gradient(
+                    circle,
+                    rgba(126, 170, 160, 0.06) 0%,
+                    transparent 70%
+                );
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .auth-wrapper {
+                position: relative;
+                z-index: 1;
+                width: 100%;
+                max-width: 420px;
+                padding: 0 16px;
+            }
+
+            .auth-header {
+                text-align: center;
+                margin-bottom: 36px;
+            }
+            .auth-header .logo-sm {
+                font-family: 'DM Serif Display', serif;
+                font-size: 1.2rem;
+                color: var(--moon);
+                margin-bottom: 28px;
+                display: block;
+            }
+            .auth-header .logo-sm span {
+                color: var(--sage);
+            }
+            .auth-header h2 {
+                font-size: 1.9rem;
+                margin-bottom: 6px;
+            }
+            .auth-header p {
+                color: var(--muted);
+                font-size: 0.88rem;
+            }
+
+            .auth-card {
+                background: var(--surface);
+                border: 1px solid var(--rim);
+                border-radius: var(--r-lg);
+                padding: 36px 32px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .auth-btn {
+                width: 100%;
+                padding: 13px;
+                background: var(--sage);
+                color: var(--night);
+                border: none;
+                border-radius: var(--r);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 0.95rem;
+                font-weight: 500;
+                cursor: pointer;
+                margin-top: 6px;
+                transition:
+                    opacity 0.2s,
+                    transform 0.2s;
+            }
+            .auth-btn:hover {
+                opacity: 0.88;
+                transform: translateY(-1px);
+            }
+
+            .toggle-row {
+                text-align: center;
+                margin-top: 20px;
+                font-size: 0.86rem;
+                color: var(--muted);
+            }
+            .toggle-row span {
+                color: var(--sage);
+                cursor: pointer;
+                font-weight: 500;
+            }
+            .toggle-row span:hover {
+                text-decoration: underline;
+            }
+
+            .back-link {
+                display: block;
+                text-align: center;
+                margin-top: 20px;
+                font-size: 0.83rem;
+                color: var(--muted);
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+            .back-link:hover {
+                color: var(--moon);
+            }
+
+            /* name field hidden by default */
+            #name-group {
+                display: none;
+            }
+
+            /* slide animation on switch */
+            .auth-card {
+                transition: transform 0.1s ease;
+            }
+
+            /* error / info */
+            .form-info {
+                font-size: 0.78rem;
+                color: var(--muted);
+                margin-top: 4px;
+            }
+
+            .separator {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin: 20px 0;
+                color: var(--muted);
+                font-size: 0.78rem;
+            }
+            .separator::before,
+            .separator::after {
+                content: '';
+                flex: 1;
+                height: 1px;
+                background: var(--rim);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="glow"></div>
+
+        <div class="auth-wrapper">
+            <div class="auth-header">
+                <a href="landingPage.html" class="logo-sm">SADAR</a>
+                <h2 id="auth-title">Welcome</h2>
+                <p id="auth-subtitle">
+                    Sign in to continue your sleep analysis.
+                </p>
+            </div>
+
+            <div class="auth-card">
+                <form id="auth-form" action="dashboard.html">
+                    <div class="form-group" id="name-group">
+                        <label>Full Name</label>
+                        <input
+                            type="text"
+                            id="auth-name"
+                            placeholder="Your name"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            id="auth-username"
+                            placeholder="Username"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            id="auth-pass"
+                            placeholder="••••••••"
+                            required
+                        />
+                        <p
+                            class="form-info"
+                            id="pass-hint"
+                            style="display: none"
+                        >
+                            Minimum 8 characters.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="auth-btn" id="auth-submit">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="toggle-row">
+                    <span id="toggle-trigger" onclick="toggleMode()"
+                        >Don't have an account? Sign Up</span
+                    >
+                </div>
+            </div>
+
+            <a href="landingPage.html" class="back-link">← Back to home</a>
+        </div>
+
+        <script>
+            let isRegister = false;
+
+            function toggleMode() {
+                isRegister = !isRegister;
+                const title = document.getElementById('auth-title');
+                const subtitle = document.getElementById('auth-subtitle');
+                const nameGrp = document.getElementById('name-group');
+                const submit = document.getElementById('auth-submit');
+                const toggle = document.getElementById('toggle-trigger');
+                const passHint = document.getElementById('pass-hint');
+
+                if (isRegister) {
+                    title.textContent = 'Create New Account';
+                    subtitle.textContent =
+                        'Register to start monitoring your sleep.';
+                    nameGrp.style.display = 'block';
+                    submit.textContent = 'Create Account & Sign In';
+                    toggle.textContent = 'Already have an account? Sign In';
+                    passHint.style.display = 'block';
+                } else {
+                    title.textContent = 'Welcome';
+                    subtitle.textContent =
+                        'Sign in to continue your sleep analysis.';
+                    nameGrp.style.display = 'none';
+                    submit.textContent = 'Sign In';
+                    toggle.textContent = "Don't have an account? Sign Up";
+                    passHint.style.display = 'none';
+                }
+            }
+
+            document
+                .getElementById('auth-form')
+                .addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    const username =
+                        document.getElementById('auth-username').value;
+                    const password = document.getElementById('auth-pass').value;
+
+                    const endpoint = isRegister
+                        ? 'https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/register'
+                        : 'https://sadar-sleep-disorder-predictor-with-xai-production.up.railway.app/login';
+
+                    try {
+                        const response = await fetch(endpoint, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username, password }),
+                        });
+
+                        const resData = await response.json();
+
+                        if (resData.status === 'success') {
+                            sessionStorage.setItem(
+                                'rs_user',
+                                JSON.stringify({
+                                    id: resData.user.id,
+                                    name: resData.user.username,
+                                }),
+                            );
+
+                            alert(resData.message);
+                            window.location.href = 'dashboard.html';
+                        } else {
+                            alert('Failed: ' + resData.message);
+                        }
+                    } catch (error) {
+                        console.error(
+                            'Error connecting to the database:',
+                            error,
+                        );
+                        alert('Failed to connect to the SADAR backend server.');
+                    }
+                });
+        </script>
+    </body>
 </html>
