@@ -465,10 +465,10 @@ SELECT * FROM prediction_history;
 ## Usage Guide
 
 1. **Visit** [sadarai.netlify.app](https://sadarai.netlify.app) to access the landing page.
-2. **Click "Mulai Analisis"** to go to the login page.
+2. **Click "Start Analysis"** to go to the login page.
 3. **Register or Log In** — create a new account or log in with existing credentials.
 4. **Fill in the health form** on the dashboard with your data.
-5. **Click "Mulai Analisis AI"** — results appear in under 2 seconds.
+5. **Click "Start AI Analysis"** — results appear in under 2 seconds.
 6. **Read your results** — prediction label, XAI factor breakdown, and personalized recommendations.
 7. **View your history** at the bottom of the dashboard to track trends over time.
 
